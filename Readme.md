@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Вячеслав Обласов](https://up.htmlacademy.ru/ecmascript/3/user/124494).
-* Наставник: `Алексей Балесный`.
+* Наставник: [Алексей Балесный](https://htmlacademy.ru/profile/id221665).
 
 ---
 
