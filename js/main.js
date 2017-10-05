@@ -2,7 +2,7 @@
  * Массив всех экранов
  * @type {Array}
  */
-const screens = [];
+let screens = [];
 
 /**
  * Контейнер для отрисовки экрана
@@ -30,26 +30,18 @@ const screensIds = [
  */
 let currentScreen = 0;
 
-/**
- * список keyCode для событий нажатия клавиш
- * @enum {number}
- */
-const Keys = {
-  ALT: 18,
-  LEFT: 37,
-  RIGHT: 39
-};
 
 /**
  * Сохранение шаблонов экранов в массив screens
  */
-function getScreens() {
-  screensIds.forEach(function (screenId) {
+const getScreens = () => {
+  screens = screensIds.map((screenId, i) => {
     let element;
     // главный экран уже отрисован
-    if (screenId === screensIds[0]) {
+    if (i === 0) {
+      // создаем его шаблон
       element = document.createDocumentFragment();
-      Array.from(container.children).forEach(function (elem) {
+      Array.from(container.children).forEach((elem) => {
         element.appendChild(elem);
       });
     // остальные экраны берем из шаблонов
@@ -61,100 +53,72 @@ function getScreens() {
         element = template.cloneNode(true);
       }
     }
-    screens.push(element);
+    return element;
   });
-}
+};
 
 /**
  * Очистка контейнера экранов
  */
-function clearContainer() {
-  while (container.firstChild) {
-    container.removeChild(container.firstChild);
-  }
-}
+const clearContainer = () => {
+  container.innerHTML = ``;
+};
 
 /**
  * Отрисовка экрана по его порядковому номеру
  * @param {number} screenNum
  */
-function renderScreen(screenNum) {
-  if (typeof (screenNum) !== `number`) {
-    screenNum = currentScreen;
-  } else {
-    currentScreen = screenNum;
-  }
-  const screen = screens[currentScreen].cloneNode(true);
+const renderScreen = (screenNum = currentScreen) => {
+  const screen = screens[screenNum].cloneNode(true);
   clearContainer();
   container.appendChild(screen);
-}
+  // сохраняем номер текущего экрана
+  currentScreen = screenNum;
+};
 
 /**
  * Отрисовываем предыдущий экран
  */
-function prevScreen() {
-
-  let screenNum = currentScreen - 1;
-
-  if (screenNum < 0) {
+const prevScreen = () => {
+  if (currentScreen - 1 < 0) {
     return;
   }
   currentScreen--;
   renderScreen();
-}
+};
 
 /**
  * Отрисовываем следующий экран
  */
-function nextScreen() {
-
-  let screenNum = currentScreen + 1;
-
-  if (screenNum >= screens.length) {
+const nextScreen = () => {
+  if (currentScreen + 1 >= screens.length) {
     return;
   }
   currentScreen++;
   renderScreen();
-}
+};
 
-
-/**
- * Нажата ли клавиша Alt
- * @type {boolean}
- */
-let keyAltIsPressed = false;
-
-document.addEventListener(`keydown`, function (e) {
+document.addEventListener(`keydown`, (e) => {
   e.preventDefault();
 
-  // Нажат Alt
-  if (e.keyCode === Keys.ALT) {
-    // переключаем флаг
-    keyAltIsPressed = true;
-  // Нажата стрелка влево
-  } else if (e.keyCode === Keys.LEFT) {
-    // Если ALt нажат
-    if (keyAltIsPressed) {
+  // Если ALt не нажат
+  if (!e.altKey) {
+    return;
+  }
+
+  switch (e.key) {
+    // Нажата стрелка влево
+    case `ArrowLeft`:
       // пытаемся отрисовать предыдущий экран
       prevScreen();
-    }
-  // Нажата стрелка вправо
-  } else if (e.keyCode === Keys.RIGHT) {
-    // Если ALt нажат
-    if (keyAltIsPressed) {
+      break;
+    // Нажата стрелка вправо
+    case `ArrowRight`:
       // пытаемся отрисовать следующий экран
       nextScreen();
-    }
+      break;
   }
 
-});
-
-document.addEventListener(`keyup`, function (e) {
-  // Отпущен Alt
-  if (e.keyCode === Keys.ALT) {
-    // переключаем флаг
-    keyAltIsPressed = false;
-  }
 });
 
 // получаем экраны
