@@ -15,10 +15,18 @@ const clearContainer = () => {
  * Отрисовка переданного экрана
  * @param {Element} element
  */
-const renderScreen = (element) => {
+export const renderScreen = (element) => {
   clearContainer();
   container.appendChild(element);
 };
 
 
-export default renderScreen;
+/**
+ * @param {String} html
+ * @return {Element}
+ */
+export const getElementFromTemplate = (html) => {
+  const element = document.createElement(`div`);
+  element.innerHTML = html;
+  return element;
+};

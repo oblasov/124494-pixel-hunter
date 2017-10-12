@@ -1,10 +1,10 @@
-import {getElementFromTemplate} from '../model.js';
+//import {getElementFromTemplate} from '../model.js';
 
-import renderScreen from '../app.js';
+import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
-import screenGame1 from './screen-4.js';
+import screenGame1 from './screen-game-1.js';
 
-import screenGreeting from './screen-2.js';
+import screenGreeting from './screen-greeting.js';
 
 /**
  * 3. Экран правил игры, блок #rules.
@@ -54,11 +54,7 @@ const btn = element.querySelector(`.rules__button`);
 
 input.addEventListener(`keyup`, () => {
   // Кнопка отправки должна быть отключена, disabled, пока в поле с именем игрока ничего не введено.
-  if (input.value) {
-    btn.disabled = false;
-  } else {
-    btn.disabled = true;
-  }
+  btn.disabled = !input.value;
 });
 
 form.addEventListener(`submit`, (e) => {

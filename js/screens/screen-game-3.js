@@ -1,10 +1,10 @@
-import {getElementFromTemplate} from '../model.js';
+//import {getElementFromTemplate} from '../model.js';
 
-import renderScreen from '../app.js';
+import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
-import screenStats from './screen-7.js';
+import screenStats from './screen-stats.js';
 
-import screenGreeting from './screen-2.js';
+import screenGreeting from './screen-greeting.js';
 
 /**
  * 6. Экран третьей игры, блок #game-3
@@ -69,7 +69,7 @@ const element = getElementFromTemplate(`
 // на любой ответ на третьем игровом экране, любой блок .game__option
 
 const gameOptions = element.querySelectorAll(`.game__option`);
-Array.from(gameOptions).forEach((gameOption) => {
+gameOptions.forEach((gameOption) => {
   gameOption.addEventListener(`click`, () => {
     renderScreen(screenStats);
   });

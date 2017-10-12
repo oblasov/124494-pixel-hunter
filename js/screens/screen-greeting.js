@@ -1,8 +1,8 @@
-import {getElementFromTemplate} from '../model.js';
+//import {getElementFromTemplate} from '../model.js';
 
-import renderScreen from '../app.js';
+import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
-import screenRules from './screen-3.js';
+import screenRules from './screen-rules.js';
 
 /**
  * 2. Экран приветствия, блок #greeting
