@@ -1,5 +1,3 @@
-//import {renderScreen, getElementFromTemplate} from '../model.js';
-
 import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
 import screenGame2 from './screen-game-2.js';
