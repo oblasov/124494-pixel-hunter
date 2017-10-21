@@ -2,9 +2,19 @@
  * Стартовые параметры игры
  * @enum {number}
  */
-export const startConfigs = {
-  lives: 3,
-  timer: 30
+export const Config = {
+  LIVES: 3,
+  TIMER: 30
+};
+
+/**
+ * Бонусы за скорость
+ * @enum {number}
+ */
+const Bonus = {
+  FAST: 50, // За каждый быстрый ответ дополнительно начисляется 50 очков
+  SLOW: -50, // За каждый медленный ответ с игрока снимается 50 очков.
+  NORMAL: 0
 };
 
 /**
@@ -16,7 +26,8 @@ export const startConfigs = {
 export const countUserScore = (userAnswers, userLives) => {
   let score = 0;
 
-  if (typeof userAnswers !== `object` || userAnswers === null || typeof userLives !== `number`) {
+  if (!Array.isArray(userAnswers) || typeof userLives !== `number`) {
+    // throw new Error(`invalid input data`);
     return null;
   }
 
@@ -25,29 +36,16 @@ export const countUserScore = (userAnswers, userLives) => {
   }
 
   // Производим подсчет заработанных очков
-  userAnswers.forEach((answer) => {
+  score = userAnswers.reduce((sum, answer) => {
     // За каждый правильный ответ
     if (answer.correct) {
       // даётся 100 очков.
-      score += 100;
-      switch (answer.speed) {
-        // За каждый быстрый ответ дополнительно начисляется 50 очков
-        // Таким образом, быстрый ответ приносит игроку 150 очков.
-        case `fast`:
-          score += 50;
-          break;
-        // За каждый медленный ответ с игрока снимается 50 очков.
-        // Таким образом, каждый медленный ответ приносит игроку 50 очков.
-        case `slow`:
-          score -= 50;
-          break;
-        case `normal`:
-          break;
-        default:
-          break;
-      }
+      sum += 100;
+      // бонус за скорость
+      sum += Bonus[answer.speed.toUpperCase()];
     }
-  });
+    return sum;
+  }, 0);
 
   // За каждое неиспользованное право на ошибку добавляется 50 очков.
   score += 50 * userLives;

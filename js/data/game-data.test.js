@@ -1,60 +1,27 @@
 import assert from 'assert';
 
-import {startConfigs, countUserScore} from '../data/game-data.js';
+import {Config, countUserScore} from '../data/game-data.js';
 
 describe(`gameData`, () => {
   describe(`getUserAnswers`, () => {
 
-    const normalAnswers = [
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`},
-      {correct: true, speed: `normal`}
-    ];
+    const normalAnswers = Array(10).fill({correct: true, speed: `normal`});
 
-    const badAnswers = [
-      {correct: true, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: false, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: false, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: true, speed: `slow`},
-      {correct: false, speed: `slow`}
-    ];
+    const badAnswers = Array(10).fill({correct: true, speed: `slow`}).fill({correct: false, speed: `slow`}, 0, 3);
 
-    const bestAnswers = [
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`},
-      {correct: true, speed: `fast`}
-    ];
+    const bestAnswers = Array(10).fill({correct: true, speed: `fast`});
 
     it(`should allow to enter valid data`, () => {
-      assert(typeof countUserScore(normalAnswers, startConfigs.lives) === `number`);
+      assert(typeof countUserScore(normalAnswers, Config.LIVES) === `number`);
     });
 
     it(`should return -1, if user didn't answer all 10 questions`, () => {
-      assert.strictEqual(countUserScore([], startConfigs.lives), -1);
-      assert.strictEqual(countUserScore(normalAnswers.slice(0, 9), startConfigs.lives), -1);
+      assert.strictEqual(countUserScore([], Config.LIVES), -1);
+      assert.strictEqual(countUserScore(normalAnswers.slice(0, 9), Config.LIVES), -1);
     });
 
     it(`should return 1150, if user gave all answers with normal speed and saved all lives`, () => {
-      assert.strictEqual(countUserScore(normalAnswers, startConfigs.lives), 1150);
+      assert.strictEqual(countUserScore(normalAnswers, Config.LIVES), 1150);
     });
 
     it(`should return 350, if user gave all answers with slow speed and lost all lives`, () => {
@@ -66,20 +33,24 @@ describe(`gameData`, () => {
     });
 
     it(`should deal with corner cases correctly`, () => {
-      assert(!countUserScore(``, startConfigs.lives));
-      assert(!countUserScore(null, startConfigs.lives));
-      // assert(!countUserScore(undefined, startConfigs.lives));
+      assert(!countUserScore(``, Config.LIVES));
+      assert(!countUserScore(NaN, Config.LIVES));
+      assert(!countUserScore({}, Config.LIVES));
+      assert(!countUserScore(null, Config.LIVES));
+      assert(!countUserScore(void (0), Config.LIVES));
 
       assert(!countUserScore(normalAnswers, ``));
+      assert(!countUserScore(normalAnswers, NaN));
+      assert(!countUserScore(normalAnswers, {}));
       assert(!countUserScore(normalAnswers, null));
-      // assert(!countUserScore(normalAnswers, undefined));
+      assert(!countUserScore(normalAnswers, void (0)));
     });
 
     it(`should deal with invalid data`, () => {
-      assert(!countUserScore(0, startConfigs.lives));
-      assert(!countUserScore(1, startConfigs.lives));
-      assert(!countUserScore(true, startConfigs.lives));
-      assert(!countUserScore(`string`, startConfigs.lives));
+      assert(!countUserScore(0, Config.LIVES));
+      assert(!countUserScore(1, Config.LIVES));
+      assert(!countUserScore(true, Config.LIVES));
+      assert(!countUserScore(`string`, Config.LIVES));
 
       assert(!countUserScore(normalAnswers, true));
       assert(!countUserScore(normalAnswers, {}));

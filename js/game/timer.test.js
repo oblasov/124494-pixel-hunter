@@ -1,15 +1,15 @@
 import assert from 'assert';
 
-import {startConfigs} from '../data/game-data.js';
+import {Config} from '../data/game-data.js';
 
-import {Timer} from './game.js';
+import Timer from './timer.js';
 
 
 describe(`game`, () => {
   describe(`Timer`, () => {
 
     it(`should allow to enter valid data`, () => {
-      assert(typeof (new Timer(startConfigs.timer).value) === `number`);
+      assert(typeof (new Timer(Config.TIMER).value) === `number`);
     });
 
     it(`should set time, during which the timer will work`, () => {
@@ -17,13 +17,14 @@ describe(`game`, () => {
     });
 
     it(`method tick() decreases the timer by one`, () => {
-      assert.strictEqual((new Timer(startConfigs.timer).tick().value), new Timer(startConfigs.timer).value - 1);
+      const timer = new Timer(Config.TIMER);
+      assert.strictEqual(timer.value - 1, timer.tick().value);
     });
 
     it(`the timer should announce that it is finished`, () => {
       // флаг, закончен ли таймер
       let isExpired = false;
-      // создаем таймер с нулевым значение
+      // создаем таймер с нулевым значением
       const timer = new Timer(0);
       // передаем коллбек при окончании таймера
       timer.onExpire = () => {
