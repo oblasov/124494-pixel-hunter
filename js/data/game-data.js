@@ -4,7 +4,8 @@
  */
 export const Config = {
   LIVES: 3,
-  TIMER: 30
+  TIMER: 30,
+  TIME: 0
 };
 
 /**
@@ -18,15 +19,90 @@ const Bonus = {
 };
 
 /**
+ * Вопросы для игрока
+ * @type {Array.<Object>}
+ */
+const questions = [
+  {
+    img: `https://k42.kn3.net/CF42609C8.jpg`,
+    type: `painting`
+  },
+  {
+    img: `https://k42.kn3.net/D2F0370D6.jpg`,
+    type: `painting`
+  },
+  {
+    img: `https://k32.kn3.net/5C7060EC5.jpg`,
+    type: `painting`
+  },
+
+  {
+    img: `http://i.imgur.com/1KegWPz.jpg`,
+    type: `photo`
+  },
+  {
+    img: `https://i.imgur.com/DiHM5Zb.jpg`,
+    type: `photo`
+  },
+  {
+    img: `http://i.imgur.com/DKR1HtB.jpg`,
+    type: `photo`
+  }
+
+];
+
+/**
+ * Набор данных об экранах
+ * @type {Array.<Object>}
+ */
+export const screens = {
+  'screen-game-1': {
+    task: `Угадайте для каждого изображения фото или рисунок?`,
+    questions: questions.slice(0, 2),
+    btns: true,
+    imgWidth: 458,
+    imgHeight: 468
+  },
+  'screen-game-2': {
+    task: `Угадай, фото или рисунок?`,
+    type: `game__content--wide`,
+    questions: questions.slice(2, 3),
+    btns: true,
+    imgWidth: 705,
+    imgHeight: 455
+  },
+  'screen-game-3': {
+    task: `Найдите рисунок среди изображений`,
+    type: `game__content--triple`,
+    questions: questions.slice(3),
+    btns: false,
+    imgWidth: 304,
+    imgHeight: 455
+  }
+
+};
+
+// wrong slow fast correct unknown
+export const userAnswers = [];
+
+export const getAnswers = () =>{
+  return userAnswers;
+};
+
+export const setAnswers = (obj) =>{
+  userAnswers.push(obj);
+};
+
+/**
  * Функция подсчета набранных пользователем очков
- * @param {Array.<Object>} userAnswers
+ * @param {Array.<Object>} answers
  * @param {number} userLives
  * @return {number}
  */
-export const countUserScore = (userAnswers, userLives) => {
+export const countUserScore = (answers, userLives) => {
   let score = 0;
 
-  if (!Array.isArray(userAnswers) || typeof userLives !== `number`) {
+  if (!Array.isArray(answers) || typeof userLives !== `number`) {
     // throw new Error(`invalid input data`);
     return null;
   }
@@ -36,7 +112,7 @@ export const countUserScore = (userAnswers, userLives) => {
   }
 
   // Производим подсчет заработанных очков
-  score = userAnswers.reduce((sum, answer) => {
+  score = answers.reduce((sum, answer) => {
     // За каждый правильный ответ
     if (answer.correct) {
       // даётся 100 очков.
