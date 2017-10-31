@@ -25,20 +25,21 @@ const Bonus = {
 const questions = [
   {
     img: `https://k42.kn3.net/CF42609C8.jpg`,
-    type: `painting`
-  },
-  {
-    img: `https://k42.kn3.net/D2F0370D6.jpg`,
-    type: `painting`
+    type: `paint`
   },
   {
     img: `https://k32.kn3.net/5C7060EC5.jpg`,
-    type: `painting`
+    type: `paint`
   },
 
   {
     img: `http://i.imgur.com/1KegWPz.jpg`,
     type: `photo`
+  },
+
+  {
+    img: `https://k42.kn3.net/D2F0370D6.jpg`,
+    type: `paint`
   },
   {
     img: `https://i.imgur.com/DiHM5Zb.jpg`,
@@ -51,19 +52,29 @@ const questions = [
 
 ];
 
+
+export const isCorrect = (src, type) => {
+  let res = questions.find((question) => {
+    return question.img === src && question.type === type;
+  });
+
+  return typeof res === `object`;
+};
+
+
 /**
  * Набор данных об экранах
  * @type {Array.<Object>}
  */
-export const screens = {
-  'screen-game-1': {
+export const screens = [
+  {
     task: `Угадайте для каждого изображения фото или рисунок?`,
     questions: questions.slice(0, 2),
     btns: true,
     imgWidth: 458,
     imgHeight: 468
   },
-  'screen-game-2': {
+  {
     task: `Угадай, фото или рисунок?`,
     type: `game__content--wide`,
     questions: questions.slice(2, 3),
@@ -71,7 +82,7 @@ export const screens = {
     imgWidth: 705,
     imgHeight: 455
   },
-  'screen-game-3': {
+  {
     task: `Найдите рисунок среди изображений`,
     type: `game__content--triple`,
     questions: questions.slice(3),
@@ -80,17 +91,31 @@ export const screens = {
     imgHeight: 455
   }
 
-};
+];
+
 
 // wrong slow fast correct unknown
-export const userAnswers = [];
+let userAnswers = [];
 
 export const getAnswers = () =>{
   return userAnswers;
 };
 
-export const setAnswers = (obj) =>{
-  userAnswers.push(obj);
+export const addAnswer = (correct, time) =>{
+  let type = ``;
+  if (correct) {
+    type = `correct`;
+  } else {
+    type = `wrong`;
+  }
+
+  time = `normal`;
+
+  userAnswers.push({correct, speed: time, type});
+};
+
+export const clearAnswers = () =>{
+  userAnswers = [];
 };
 
 /**
@@ -107,7 +132,7 @@ export const countUserScore = (answers, userLives) => {
     return null;
   }
 
-  if (userAnswers.length < 10 || userLives < 0) {
+  if (answers.length < 10 || userLives < 0) {
     return -1;
   }
 
@@ -128,3 +153,6 @@ export const countUserScore = (answers, userLives) => {
 
   return score;
 };
+
+const normalAnswers = Array(10).fill({correct: true, speed: `normal`});
+console.log(countUserScore(normalAnswers, Config.LIVES));

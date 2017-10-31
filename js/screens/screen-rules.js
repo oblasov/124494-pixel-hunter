@@ -1,6 +1,6 @@
 import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
-import screenGame1 from './screen-game-1.js';
+import screenGame from './screen-game.js';
 
 import screenGreeting from './screen-greeting.js';
 
@@ -26,7 +26,7 @@ export default (data) => {
 
   form.addEventListener(`submit`, (e) => {
     e.preventDefault();
-    renderScreen(screenGame1());
+    screenGame();
   });
 
 
