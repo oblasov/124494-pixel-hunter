@@ -2,31 +2,19 @@ import {getElementFromTemplate, renderScreen} from '../render-screen.js';
 
 import screenGreeting from './screen-greeting.js';
 
-/**
- * 1. Главный экран, на основе блока #intro
- * @type {Element}
- */
-const element = getElementFromTemplate(`
-    <div id="main" class="central__content">
-      <div id="intro" class="intro">
-        <h1 class="intro__asterisk">*</h1>
-        <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
-      </div>
-    </div>
-    <footer class="footer">
-      <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-      <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-      <div class="footer__social-links">
-        <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-        <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-        <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-        <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-      </div>
-    </footer>`);
+import getTemplate from '../templates/intro.js';
 
-// Экран приветствия, блок #greeting, должен показываться по нажатию на символ звёздочки, элемент .intro__asterisk на главном экране
-element.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
-  renderScreen(screenGreeting);
-});
+export default (data) => {
+  /**
+   * 1. Главный экран, на основе блока #intro
+   * @type {Element}
+   */
+  const element = getElementFromTemplate(getTemplate());
 
-export default element;
+  // Экран приветствия, блок #greeting, должен показываться по нажатию на символ звёздочки, элемент .intro__asterisk на главном экране
+  element.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
+    renderScreen(screenGreeting());
+  });
+
+  return element;
+};
