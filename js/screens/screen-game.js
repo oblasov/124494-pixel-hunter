@@ -7,7 +7,7 @@ import screenStats from './screen-stats.js';
 import Question from '../game/question.js';
 
 
-import {screens} from '../data/game-data.js';
+import {screens, User} from '../data/game-data.js';
 
 
 export default () => {
@@ -18,7 +18,7 @@ export default () => {
 
     let screen;
 
-    if (num === screens.length) {
+    if (num === screens.length || User.lives < 0) {
       // Экран с результатами, блок #stats, должен показываться по нажатию
       // на любой ответ на последнем игровом экране, любой блок .game__option
       renderScreen(screenStats());

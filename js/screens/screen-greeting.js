@@ -4,7 +4,7 @@ import screenRules from './screen-rules.js';
 
 import getTemplate from '../templates/greeting.js';
 
-import {clearAnswers} from '../data/game-data.js';
+import {newAttempt} from '../data/game-data.js';
 
 export default () => {
   /**
@@ -14,7 +14,7 @@ export default () => {
   const element = getElementFromTemplate(getTemplate());
 
   // очищаем массив ответов
-  clearAnswers();
+  newAttempt();
 
   // Экран с правилами игры, блок #rules,
   // должен показываться по нажатию на блок со стрелкой вправо,

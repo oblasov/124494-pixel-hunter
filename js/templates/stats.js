@@ -2,106 +2,98 @@ import getHeader from './header.js';
 import getFooter from './footer.js';
 import getStats from './stats-list.js';
 
+import {User, Bonus, countStats} from '../data/game-data.js';
+
 /**
  * Возвращает шаблон экрана статистики
  * @param {Object} userAnswers
  * @return {string}
  */
 export default (userAnswers) => {
+  let title = ``;
+  let content = ``;
 
-  return `
+  const data = countStats(userAnswers, User.lives);
 
-    ${getHeader()}
-    
-    <div class="result">
-      <h1>Победа!</h1>
+  if (User.lives >= 0) {
+
+    title = `Победа!`;
+
+    let bonusForFast = `
+        <tr>
+          <td></td>
+          <td class="result__extra">Бонус за скорость:</td>
+          <td class="result__extra">${data.fastAnswersCount}&nbsp;<span class="stats__result stats__result--fast"></span></td>
+          <td class="result__points">×&nbsp;${Bonus.FAST}</td>
+          <td class="result__total">${data.fastAnswersBonus}</td>
+        </tr>`;
+
+    let bonusForLifes = `
+        <tr>
+          <td></td>
+          <td class="result__extra">Бонус за жизни:</td>
+          <td class="result__extra">${data.userLivesCount}&nbsp;<span class="stats__result stats__result--alive"></span></td>
+          <td class="result__points">×&nbsp;${Bonus.LIFE}</td>
+          <td class="result__total">${data.userLivesBonus}</td>
+        </tr>
+    `;
+    let bonusForSlow = `
+        <tr>
+          <td></td>
+          <td class="result__extra">Штраф за медлительность:</td>
+          <td class="result__extra">${data.slowAnswersCount}&nbsp;<span class="stats__result stats__result--slow"></span></td>
+          <td class="result__points">×&nbsp;${Bonus.SLOW}</td>
+          <td class="result__total">${data.slowAnswersBonus}</td>
+          </tr>
+`;
+
+    content = `
       <table class="result__table">
         <tr>
           <td class="result__number">1.</td>
           <td colspan="2">
             ${getStats(userAnswers)}
           </td>
-          <td class="result__points">×&nbsp;100</td>
-          <td class="result__total">900</td>
+          <td class="result__points">×&nbsp;${Bonus.CORRECT}</td>
+          <td class="result__total">${data.correctAnswersBonus}</td>
         </tr>
+        
+        ${data.slowAnswersBonus ? bonusForSlow : ``}
+        
+        ${data.userLivesBonus ? bonusForLifes : ``}
+        
+        ${data.fastAnswersBonus ? bonusForFast : ``}
+        
         <tr>
-          <td></td>
-          <td class="result__extra">Бонус за скорость:</td>
-          <td class="result__extra">1&nbsp;<span class="stats__result stats__result--fast"></span></td>
-          <td class="result__points">×&nbsp;50</td>
-          <td class="result__total">50</td>
+          <td colspan="5" class="result__total  result__total--final">${data.total}</td>
         </tr>
-        <tr>
-          <td></td>
-          <td class="result__extra">Бонус за жизни:</td>
-          <td class="result__extra">2&nbsp;<span class="stats__result stats__result--alive"></span></td>
-          <td class="result__points">×&nbsp;50</td>
-          <td class="result__total">100</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="result__extra">Штраф за медлительность:</td>
-          <td class="result__extra">2&nbsp;<span class="stats__result stats__result--slow"></span></td>
-          <td class="result__points">×&nbsp;50</td>
-          <td class="result__total">-100</td>
-        </tr>
-        <tr>
-          <td colspan="5" class="result__total  result__total--final">950</td>
-        </tr>
-      </table>
-      
-      <table class="result__table">
+      </table>`;
+
+  } else {
+
+    title = `Поражение...`;
+
+    content = `<table class="result__table">
         <tr>
           <td class="result__number">2.</td>
           <td>
-            <ul class="stats">
-              <li class="stats__result stats__result--wrong"></li>
-              <li class="stats__result stats__result--slow"></li>
-              <li class="stats__result stats__result--fast"></li>
-              <li class="stats__result stats__result--correct"></li>
-              <li class="stats__result stats__result--wrong"></li>
-              <li class="stats__result stats__result--unknown"></li>
-              <li class="stats__result stats__result--slow"></li>
-              <li class="stats__result stats__result--wrong"></li>
-              <li class="stats__result stats__result--fast"></li>
-              <li class="stats__result stats__result--wrong"></li>
-            </ul>
+            ${getStats(userAnswers)}
           </td>
           <td class="result__total"></td>
-          <td class="result__total  result__total--final">fail</td>
+          <td class="result__total result__total--final">fail</td>
         </tr>
-      </table>
-      <table class="result__table">
-        <tr>
-          <td class="result__number">3.</td>
-          <td colspan="2">
-            <ul class="stats">
-              <li class="stats__result stats__result--wrong"></li>
-              <li class="stats__result stats__result--slow"></li>
-              <li class="stats__result stats__result--fast"></li>
-              <li class="stats__result stats__result--correct"></li>
-              <li class="stats__result stats__result--wrong"></li>
-              <li class="stats__result stats__result--unknown"></li>
-              <li class="stats__result stats__result--slow"></li>
-              <li class="stats__result stats__result--unknown"></li>
-              <li class="stats__result stats__result--fast"></li>
-              <li class="stats__result stats__result--unknown"></li>
-            </ul>
-          </td>
-          <td class="result__points">×&nbsp;100</td>
-          <td class="result__total">900</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="result__extra">Бонус за жизни:</td>
-          <td class="result__extra">2&nbsp;<span class="stats__result stats__result--alive"></span></td>
-          <td class="result__points">×&nbsp;50</td>
-          <td class="result__total">100</td>
-        </tr>
-        <tr>
-          <td colspan="5" class="result__total  result__total--final">950</td>
-        </tr>
-      </table>
+      </table>`;
+  }
+
+  // возвращаем шаблон
+  return `
+
+    ${getHeader()}
+    
+    <div class="result">
+      <h1>${title}</h1>
+
+      ${content}
       
     </div>
     

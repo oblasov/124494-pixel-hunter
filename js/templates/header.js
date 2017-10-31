@@ -1,12 +1,4 @@
-import {Config} from '../data/game-data.js';
-
-const headerGameTemplate = `
-      <h1 class="game__timer">NN</h1>
-      <div class="game__lives">
-        ${new Array(3 - Config.LIVES).fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-        ${new Array(Config.LIVES).fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-      </div>`;
-
+import {Config, User} from '../data/game-data.js';
 
 /**
  * Возвращает шаблон header
@@ -14,11 +6,14 @@ const headerGameTemplate = `
  * @return {string}
  */
 export default (data) => {
-  let gamePanel = ``;
 
-  if (data) {
-    gamePanel = headerGameTemplate;
-  }
+  const gamePanel = data ? `
+      <h1 class="game__timer">NN</h1>
+      <div class="game__lives">
+        ${new Array(Config.LIVES - User.lives).fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
+        ${new Array(User.lives).fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
+      </div>` : ``;
+
 
   return `
 
