@@ -2,7 +2,7 @@ import getHeader from './header.js';
 import getFooter from './footer.js';
 import getStats from './stats-list.js';
 
-import {User, Bonus, countStats} from '../data/game-data.js';
+import {user, Bonus, countStats} from '../data/game-data.js';
 
 /**
  * Возвращает шаблон экрана статистики
@@ -13,9 +13,9 @@ export default (userAnswers) => {
   let title = ``;
   let content = ``;
 
-  const data = countStats(userAnswers, User.lives);
+  const data = countStats(userAnswers, user.lives);
 
-  if (User.lives >= 0) {
+  if (user.lives >= 0) {
 
     title = `Победа!`;
 
@@ -24,7 +24,7 @@ export default (userAnswers) => {
           <td></td>
           <td class="result__extra">Бонус за скорость:</td>
           <td class="result__extra">${data.fastAnswersCount}&nbsp;<span class="stats__result stats__result--fast"></span></td>
-          <td class="result__points">×&nbsp;${Bonus.FAST}</td>
+          <td class="result__points">×&nbsp;${Bonus.FAST - Bonus.CORRECT}</td>
           <td class="result__total">${data.fastAnswersBonus}</td>
         </tr>`;
 
@@ -42,7 +42,7 @@ export default (userAnswers) => {
           <td></td>
           <td class="result__extra">Штраф за медлительность:</td>
           <td class="result__extra">${data.slowAnswersCount}&nbsp;<span class="stats__result stats__result--slow"></span></td>
-          <td class="result__points">×&nbsp;${Bonus.SLOW}</td>
+          <td class="result__points">×&nbsp;${Bonus.SLOW - Bonus.CORRECT}</td>
           <td class="result__total">${data.slowAnswersBonus}</td>
           </tr>
 `;

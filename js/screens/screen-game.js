@@ -7,8 +7,7 @@ import screenStats from './screen-stats.js';
 import Question from '../game/question.js';
 
 
-import {screens, User} from '../data/game-data.js';
-
+import {screens, user} from '../data/game-data.js';
 
 export default () => {
 
@@ -16,15 +15,14 @@ export default () => {
 
   const renderGameScreen = () => {
 
-    let screen;
-
-    if (num === screens.length || User.lives < 0) {
+    if (num === screens.length || user.lives < 0) {
       // Экран с результатами, блок #stats, должен показываться по нажатию
       // на любой ответ на последнем игровом экране, любой блок .game__option
       renderScreen(screenStats());
 
     } else {
-      screen = new Question(screens[num]);
+
+      const screen = new Question(screens[num]);
 
       // добавляем коллбек при ответе пользователя
       screen.onAnswered = () => {

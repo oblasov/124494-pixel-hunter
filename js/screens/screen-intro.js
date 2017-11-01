@@ -4,7 +4,7 @@ import screenGreeting from './screen-greeting.js';
 
 import getTemplate from '../templates/intro.js';
 
-export default (data) => {
+export default () => {
   /**
    * 1. Главный экран, на основе блока #intro
    * @type {Element}

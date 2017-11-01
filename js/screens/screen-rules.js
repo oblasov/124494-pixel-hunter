@@ -6,7 +6,7 @@ import screenGreeting from './screen-greeting.js';
 
 import getTemplate from '../templates/rules.js';
 
-export default (data) => {
+export default () => {
   /**
    * 3. Экран правил игры, блок #rules.
    * @type {Element}

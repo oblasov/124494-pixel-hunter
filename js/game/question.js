@@ -24,6 +24,14 @@ export default class ScreenGame {
     this.back = null;
   }
 
+  get questions() {
+    return this._data.questions;
+  }
+
+  get correctAnswerType() {
+    return this._data.correctAnswerType;
+  }
+
   render() {
 
     const element = getElementFromTemplate(getTemplate(this._data, getAnswers()));
@@ -38,7 +46,7 @@ export default class ScreenGame {
         gameOption.addEventListener(`click`, () => {
           const img = gameOption.querySelector(`img`);
 
-          addAnswer(isCorrect(img.src, `paint`));
+          addAnswer(isCorrect(img.src, this.correctAnswerType, this.questions));
 
           this._onAnswered();
         });
@@ -53,7 +61,7 @@ export default class ScreenGame {
           // дан ли верный ответ на все вопросы экрана
           const correct = Array.from(answers).every((answer) => {
             const img = answer.parentElement.parentElement.querySelector(`img`);
-            return isCorrect(img.src, answer.value);
+            return isCorrect(img.src, answer.value, this.questions);
           });
 
           addAnswer(correct);
