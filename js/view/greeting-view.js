@@ -1,11 +1,14 @@
-import getFooter from '../templates/footer.js';
+import AbstractView from './abstract-view';
+import getFooter from '../templates/footer';
+
 
 /**
- * Возвращает шаблон экрана приветствия
- * @return {string}
+ * Класс отрисовки экрана приветствия
+ * @constructor
  */
-export default () => {
-  return `
+export default class GreetingView extends AbstractView {
+  get template() {
+    return `
 
     <div class="greeting central--blur">
       <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
@@ -25,4 +28,19 @@ export default () => {
     
   `;
 
-};
+  }
+
+  bind() {
+    const greeting = this.element;
+    const nextButton = greeting.querySelector(`.greeting__continue`);
+
+    nextButton.addEventListener(`click`, () => {
+      this.onNextButtonClick();
+    });
+  }
+
+  onNextButtonClick() {
+
+  }
+
+}

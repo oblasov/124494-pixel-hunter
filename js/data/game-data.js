@@ -36,6 +36,14 @@ const QuestionType = {
 };
 
 /**
+ * Типы игры
+ * @enum {string}
+ */
+export const GameType = {
+  THREE: `game__content--triple`
+};
+
+/**
  * Вопросы для игрока
  * @type {Array.<Object>}
  */

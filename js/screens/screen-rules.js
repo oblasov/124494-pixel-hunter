@@ -1,41 +1,32 @@
-import {getElementFromTemplate, renderScreen} from '../render-screen.js';
+import {renderScreen} from '../render-screen.js';
 
 import screenGame from './screen-game.js';
 
 import screenGreeting from './screen-greeting.js';
 
-import getTemplate from '../templates/rules.js';
+import RulesView from '../view/rules-view';
 
+/**
+ * 3. Экран правил игры, блок #rules.
+ * @return {Element}
+ */
 export default () => {
-  /**
-   * 3. Экран правил игры, блок #rules.
-   * @type {Element}
-   */
-  const element = getElementFromTemplate(getTemplate());
+
+  // класс отрисовки экрана правил
+  const view = new RulesView();
 
   // Экран первой игры, блок #game-1, должен показываться по отправке формы на экране правил игры.
   // Кнопка отправки .rules__button.
-  const form = element.querySelector(`.rules__form`);
-  const input = element.querySelector(`.rules__input`);
-  const btn = element.querySelector(`.rules__button`);
-
-  input.addEventListener(`keyup`, () => {
-    // Кнопка отправки должна быть отключена, disabled, пока в поле с именем игрока ничего не введено.
-    btn.disabled = !input.value;
-  });
-
-  form.addEventListener(`submit`, (e) => {
-    e.preventDefault();
+  view.onSubmit = () => {
     screenGame();
-  });
+  };
 
 
   // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-  const backBtn = element.querySelector(`.header__back .back`);
-  backBtn.addEventListener(`click`, () => {
+  view.onBackButtonClick = () => {
     renderScreen(screenGreeting());
-  });
+  };
 
-  return element;
+  return view.getMarkup();
 
 };
