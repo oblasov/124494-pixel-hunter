@@ -1,20 +1,24 @@
-import {getElementFromTemplate, renderScreen} from '../render-screen.js';
+import {renderScreen} from '../render-screen';
 
-import screenGreeting from './screen-greeting.js';
+import screenGreeting from './screen-greeting';
 
-import getTemplate from '../templates/intro.js';
+import IntroView from '../view/intro-view';
 
-export default (data) => {
-  /**
-   * 1. Главный экран, на основе блока #intro
-   * @type {Element}
-   */
-  const element = getElementFromTemplate(getTemplate());
+/**
+ * 1. Главный экран, на основе блока #intro
+ * @return {Element}
+ */
+export default () => {
 
-  // Экран приветствия, блок #greeting, должен показываться по нажатию на символ звёздочки, элемент .intro__asterisk на главном экране
-  element.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
+  // класс отрисовки главного экрана
+  const view = new IntroView();
+
+  // Экран приветствия, блок #greeting, должен показываться по нажатию
+  // на символ звёздочки, элемент .intro__asterisk на главном экране
+  view.onNextButtonClick = () => {
     renderScreen(screenGreeting());
-  });
+  };
 
-  return element;
+  return view.getMarkup();
+
 };

@@ -4,40 +4,53 @@ import screenGreeting from './screen-greeting.js';
 
 import screenStats from './screen-stats.js';
 
-import Question from '../game/question.js';
+import GameView from '../view/game-view.js';
+import GameThreeView from '../view/game-three-view.js';
 
+import {screens, user, getAnswers, addAnswer, GameType} from '../data/game-data.js';
 
-import {screens, User} from '../data/game-data.js';
-
-
+/**
+ * Игровой экран
+ *
+ */
 export default () => {
 
   let num = 0;
 
   const renderGameScreen = () => {
 
-    let screen;
-
-    if (num === screens.length || User.lives < 0) {
+    if (num === screens.length || user.lives < 0) {
       // Экран с результатами, блок #stats, должен показываться по нажатию
       // на любой ответ на последнем игровом экране, любой блок .game__option
       renderScreen(screenStats());
 
     } else {
-      screen = new Question(screens[num]);
+
+      let view = {};
+      // выбираем отображение в зависимости от типа игры
+      switch (screens[num].type) {
+        // если нужно выбрать из трех картинок
+        case GameType.THREE:
+          view = new GameThreeView(screens[num], getAnswers());
+          break;
+        default:
+          view = new GameView(screens[num], getAnswers());
+          break;
+      }
 
       // добавляем коллбек при ответе пользователя
-      screen.onAnswered = () => {
+      view.onAnswer = (answer) => {
+        addAnswer(answer);
         renderGameScreen();
       };
 
       // отлавливаем событие клика по кнопке "Назад"
-      screen.back = () => {
+      view.onBackButtonClick = () => {
         // отрисовываем первый экран
         renderScreen(screenGreeting());
       };
 
-      screen.render();
+      renderScreen(view.getMarkup());
     }
 
     num++;
