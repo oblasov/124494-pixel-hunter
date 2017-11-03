@@ -10,11 +10,11 @@ export const Config = {
 
 /**
  * Текущее состояние пользователя
- */
+
 export const user = {
   lives: Config.LIVES
 };
-
+ */
 /**
  * Бонусы за скорость
  * @enum {number}
@@ -183,39 +183,6 @@ export const AnswerType = {
   FAST: `fast`,
   CORRECT: `correct`,
   UNKNOWN: `unknown`
-};
-
-let userAnswers = [];
-
-export const getAnswers = () =>{
-  return userAnswers;
-};
-
-/**
- * Добавление ответа в список
- * @param {boolean} correct
- * @param {number} time
- */
-export const addAnswer = (correct, time) =>{
-  let type = ``;
-  if (correct) {
-    type = AnswerType.CORRECT;
-  } else {
-    type = AnswerType.WRONG;
-    user.lives--;
-  }
-
-  time = `normal`;
-
-  userAnswers.push({correct, speed: time, type});
-};
-
-/**
- * Новое прохождение
- */
-export const newAttempt = () =>{
-  user.lives = Config.LIVES;
-  userAnswers = [];
 };
 
 /**

@@ -14,11 +14,12 @@ class ScreenRules {
     this.view = new RulesView();
   }
 
-  init() {
+  init(state) {
+    this.state = state;
     // Экран первой игры, блок #game-1, должен показываться по отправке формы на экране правил игры.
     // Кнопка отправки .rules__button.
     this.view.onSubmit = () => {
-      App.showGame();
+      App.showGame(this.state);
     };
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.

@@ -9,12 +9,12 @@ import getFooter from '../templates/footer.js';
  * @constructor
  */
 export default class GameView extends AbstractView {
-  constructor(screen, userAnswers) {
+  constructor(screen, userAnswers, state) {
     super();
 
     this._screen = screen;
     this._userAnswers = userAnswers;
-
+    this._state = state;
     /**
      * @type {?Function}
      */
@@ -30,7 +30,7 @@ export default class GameView extends AbstractView {
 
     return `
     
-    ${getHeader(true)}
+    ${getHeader(this._state)}
     
     <div class="game">
       <p class="game__task">${this._screen.task}</p>
