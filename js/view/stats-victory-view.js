@@ -27,7 +27,7 @@ export default class StatsView extends AbstractView {
     let content = ``;
 
     const data = this._stats;
-console.dir(data);
+
     let bonusForFast = `
       <tr>
         <td></td>

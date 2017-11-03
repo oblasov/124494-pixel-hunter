@@ -27,6 +27,7 @@ class Timer {
     }
     // коллбек об изменении
     this._onChange();
+    return this;
   }
 
   start() {
