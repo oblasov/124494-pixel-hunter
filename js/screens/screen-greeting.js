@@ -1,30 +1,36 @@
 import {renderScreen} from '../render-screen.js';
 
-import screenRules from './screen-rules.js';
-
 import {newAttempt} from '../data/game-data.js';
 
 import GreetingView from '../view/greeting-view.js';
 
+import App from '../application';
+
 /**
  * 2. Экран приветствия, блок #greeting
- * @return {Element}
+ * @constructor
  */
-export default () => {
+class ScreenGreeting {
 
-  // очищаем массив ответов
-  newAttempt();
+  constructor() {
+    // класс отрисовки экрана приветствия
+    this.view = new GreetingView();
 
-  // класс отрисовки экрана приветствия
-  const view = new GreetingView();
+    // очищаем массив ответов
+    newAttempt();
+  }
 
-  // Экран с правилами игры, блок #rules,
-  // должен показываться по нажатию на блок со стрелкой вправо,
-  // элемент .greeting__continue на экране приветствия.
-  view.onNextButtonClick = () => {
-    renderScreen(screenRules());
-  };
+  init() {
+    // Экран с правилами игры, блок #rules,
+    // должен показываться по нажатию на блок со стрелкой вправо,
+    // элемент .greeting__continue на экране приветствия.
+    this.view.onNextButtonClick = () => {
+      App.showRules();
+    };
+    // отрисовываем этот экран
+    renderScreen(this.view.getMarkup());
+  }
 
-  return view.getMarkup();
+}
 
-};
+export default new ScreenGreeting();
