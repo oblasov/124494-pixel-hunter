@@ -4,8 +4,6 @@ import getQuestions from '../templates/questions.js';
 import getStats from '../templates/stats-list.js';
 import getFooter from '../templates/footer.js';
 
-import {isCorrect} from '../data/game-data.js';
-
 /**
  * Класс отрисовки игрового экрана
  * @constructor
@@ -57,16 +55,13 @@ export default class GameView extends AbstractView {
 
   bind() {
     const element = this.element;
-    // const form = element.querySelector(`.game__content`);
-    // const options = element.querySelectorAll(`.game__option`);
     const backBtn = element.querySelector(`.header__back .back`);
 
     const gameOptions = element.querySelectorAll(`.game__option`);
     gameOptions.forEach((gameOption, index) => {
       gameOption.addEventListener(`click`, () => {
-
-        this.onAnswer(isCorrect(this._screen.questions[index].img, this._screen.correctAnswerType, this._screen.questions));
-
+        // передаем данные по ответу в обработчик ответа
+        this.onAnswer([{img: this._screen.questions[index].img, type: this._screen.correctAnswerType}]);
       });
     });
 
