@@ -1,63 +1,93 @@
-import {renderScreen} from '../render-screen.js';
+import {renderScreen} from '../render-screen';
 
-import screenGreeting from './screen-greeting.js';
+import App from '../application';
+import Timer from '../game/timer';
+import GameView from '../view/game-view';
+import GameThreeView from '../view/game-three-view';
 
-import screenStats from './screen-stats.js';
-
-import GameView from '../view/game-view.js';
-import GameThreeView from '../view/game-three-view.js';
-
-import {screens, user, getAnswers, addAnswer, GameType} from '../data/game-data.js';
+import {screens, isCorrect, GameType} from '../data/game-data';
+import {addAnswer} from '../data/state';
 
 /**
- * Игровой экран
- *
+ * 4. Игровой экран
+ * @constructor
  */
-export default () => {
+class ScreenGame {
 
-  let num = 0;
+  constructor() {
+    // класс отрисовки экрана правил
+    this.view = null;
+    // номер игрового экрана
+    this._gameScreenNum = 0;
+  }
 
-  const renderGameScreen = () => {
+  init(state) {
+    // текущее состояние игры
+    this.state = state;
+    this.renderGameScreen();
+  }
 
-    if (num === screens.length || user.lives < 0) {
+  renderGameScreen() {
+    if (this._gameScreenNum === screens.length || this.state.userLives < 0) {
       // Экран с результатами, блок #stats, должен показываться по нажатию
       // на любой ответ на последнем игровом экране, любой блок .game__option
-      renderScreen(screenStats());
-
+      App.showStats(this.state);
     } else {
-
-      let view = {};
+      const timer = new Timer(this.state.time);
+      const screenData = screens[this._gameScreenNum];
       // выбираем отображение в зависимости от типа игры
-      switch (screens[num].type) {
+      switch (screens[this._gameScreenNum].type) {
         // если нужно выбрать из трех картинок
         case GameType.THREE:
-          view = new GameThreeView(screens[num], getAnswers());
+          this.view = new GameThreeView(screenData, this.state.userAnswers, this.state);
           break;
         default:
-          view = new GameView(screens[num], getAnswers());
+          this.view = new GameView(screenData, this.state.userAnswers, this.state);
           break;
       }
 
       // добавляем коллбек при ответе пользователя
-      view.onAnswer = (answer) => {
-        addAnswer(answer);
-        renderGameScreen();
+      this.view.onAnswer = (answersData = null) => {
+        // флаг, правильный ли ответ
+        let correct = false;
+        // останавливаем таймер
+        timer.stop();
+        if (answersData) {
+          // проверяем все ли ответы пользователя верны
+          correct = answersData.every((answer) => {
+            return isCorrect(answer.img, answer.type, screenData.questions);
+          });
+        }
+        // добавляем ответ
+        this.state = addAnswer(correct, timer.value, this.state);
+        this.renderGameScreen(this.state);
       };
 
       // отлавливаем событие клика по кнопке "Назад"
-      view.onBackButtonClick = () => {
+      this.view.onBackButtonClick = () => {
         // отрисовываем первый экран
-        renderScreen(screenGreeting());
+        App.showGreeting();
       };
+      // отрисовываем этот экран
+      renderScreen(this.view.getMarkup());
 
-      renderScreen(view.getMarkup());
+      // перерисовываем таймер при его изменении
+      timer.onChange = (time) => {
+        this.view.setTime(time);
+      };
+      // запускаем таймер
+      timer.start();
+      // если таймер истек считаем, что пользователь ответил неверно
+      timer.onExpire = () => {
+        this.view.onAnswer();
+      };
     }
 
-    num++;
+    this._gameScreenNum++;
 
-  };
 
-  renderGameScreen();
+  }
 
-};
+}
 
+export default new ScreenGame();

@@ -1,32 +1,35 @@
-import {renderScreen} from '../render-screen.js';
+import {renderScreen} from '../render-screen';
 
-import screenGame from './screen-game.js';
-
-import screenGreeting from './screen-greeting.js';
+import App from '../application';
 
 import RulesView from '../view/rules-view';
 
 /**
  * 3. Экран правил игры, блок #rules.
- * @return {Element}
+ * @constructor
  */
-export default () => {
+class ScreenRules {
+  constructor() {
+    // класс отрисовки экрана правил
+    this.view = new RulesView();
+  }
 
-  // класс отрисовки экрана правил
-  const view = new RulesView();
+  init(state) {
+    this.state = state;
+    // Экран первой игры, блок #game-1, должен показываться по отправке формы на экране правил игры.
+    // Кнопка отправки .rules__button.
+    this.view.onSubmit = () => {
+      App.showGame(this.state);
+    };
 
-  // Экран первой игры, блок #game-1, должен показываться по отправке формы на экране правил игры.
-  // Кнопка отправки .rules__button.
-  view.onSubmit = () => {
-    screenGame();
-  };
+    // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
+    this.view.onBackButtonClick = () => {
+      App.showGreeting();
+    };
+    // отрисовываем этот экран
+    renderScreen(this.view.getMarkup());
+  }
 
+}
 
-  // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-  view.onBackButtonClick = () => {
-    renderScreen(screenGreeting());
-  };
-
-  return view.getMarkup();
-
-};
+export default new ScreenRules();

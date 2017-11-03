@@ -10,6 +10,11 @@ class Timer {
      * @type {?Function}
      */
     this.onExpire = null;
+
+    /**
+     * @type {?Function}
+     */
+    this.onChange = null;
   }
 
   tick() {
@@ -20,7 +25,8 @@ class Timer {
     if (this.value <= 0) {
       this._onExpire();
     }
-
+    // коллбек об изменении
+    this._onChange();
     return this;
   }
 
@@ -28,6 +34,12 @@ class Timer {
     this._idInterval = setInterval(() => {
       this.tick();
     }, 1000);
+  }
+
+  stop() {
+    clearInterval(this._idInterval);
+    // коллбек об изменении
+    this._onChange();
   }
 
   /**
@@ -38,6 +50,16 @@ class Timer {
     // Вызываем коллбэк
     if (typeof this.onExpire === `function`) {
       this.onExpire();
+    }
+  }
+
+  /**
+   * @private
+   */
+  _onChange() {
+    // Вызываем коллбэк
+    if (typeof this.onChange === `function`) {
+      this.onChange(this.value);
     }
   }
 

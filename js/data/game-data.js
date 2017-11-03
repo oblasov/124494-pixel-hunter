@@ -10,11 +10,11 @@ export const Config = {
 
 /**
  * Текущее состояние пользователя
- */
+
 export const user = {
   lives: Config.LIVES
 };
-
+ */
 /**
  * Бонусы за скорость
  * @enum {number}
@@ -185,39 +185,6 @@ export const AnswerType = {
   UNKNOWN: `unknown`
 };
 
-let userAnswers = [];
-
-export const getAnswers = () =>{
-  return userAnswers;
-};
-
-/**
- * Добавление ответа в список
- * @param {boolean} correct
- * @param {number} time
- */
-export const addAnswer = (correct, time) =>{
-  let type = ``;
-  if (correct) {
-    type = AnswerType.CORRECT;
-  } else {
-    type = AnswerType.WRONG;
-    user.lives--;
-  }
-
-  time = `normal`;
-
-  userAnswers.push({correct, speed: time, type});
-};
-
-/**
- * Новое прохождение
- */
-export const newAttempt = () =>{
-  user.lives = Config.LIVES;
-  userAnswers = [];
-};
-
 /**
  * Функция подсчета всей набранной статистики
  * @param {Array.<Object>} answers
@@ -231,6 +198,8 @@ export const countStats = (answers, userLives) => {
     correctAnswersBonus: 0,
     slowAnswersCount: 0,
     slowAnswersBonus: 0,
+    fastAnswersCount: 0,
+    fastAnswersBonus: 0,
     userLivesCount: userLives,
     userLivesBonus: 0
   };
@@ -251,6 +220,18 @@ export const countStats = (answers, userLives) => {
       // бонус по типу ответа
       sum += Bonus[answer.type.toUpperCase()];
       stats.correctAnswersCount++;
+
+      switch (answer.type) {
+        // если нужно выбрать из трех картинок
+        case AnswerType.SLOW:
+          stats.slowAnswersCount++;
+          stats.slowAnswersBonus += Bonus[answer.type.toUpperCase()];
+          break;
+        case AnswerType.FAST:
+          stats.fastAnswersCount++;
+          stats.fastAnswersBonus += Bonus[answer.type.toUpperCase()];
+          break;
+      }
     }
     return sum;
   }, 0);

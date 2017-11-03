@@ -1,17 +1,17 @@
-import {Config, user} from '../data/game-data.js';
+import {Config} from '../data/game-data.js';
 
 /**
  * Возвращает шаблон header
- * @param {Object} data
+ * @param {Object} state
  * @return {string}
  */
-export default (data) => {
+export default (state = null) => {
 
-  const gamePanel = data ? `
+  const gamePanel = state ? `
       <h1 class="game__timer">NN</h1>
       <div class="game__lives">
-        ${new Array(Config.LIVES - user.lives).fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-        ${new Array(user.lives).fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
+        ${new Array(Config.LIVES - state.userLives).fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
+        ${new Array(state.userLives).fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
       </div>` : ``;
 
 

@@ -1,6 +1,4 @@
-import {renderScreen} from './render-screen.js';
-
-import screenIntro from './screens/screen-intro.js';
+import App from './application';
 
 // отрисовываем первый экран
-renderScreen(screenIntro());
+App.showIntro();

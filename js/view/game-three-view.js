@@ -4,19 +4,17 @@ import getQuestions from '../templates/questions.js';
 import getStats from '../templates/stats-list.js';
 import getFooter from '../templates/footer.js';
 
-import {isCorrect} from '../data/game-data.js';
-
 /**
  * Класс отрисовки игрового экрана
  * @constructor
  */
 export default class GameView extends AbstractView {
-  constructor(screen, userAnswers) {
+  constructor(screen, userAnswers, state) {
     super();
 
     this._screen = screen;
     this._userAnswers = userAnswers;
-
+    this._state = state;
     /**
      * @type {?Function}
      */
@@ -32,7 +30,7 @@ export default class GameView extends AbstractView {
 
     return `
     
-    ${getHeader(true)}
+    ${getHeader(this._state)}
     
     <div class="game">
       <p class="game__task">${this._screen.task}</p>
@@ -57,16 +55,13 @@ export default class GameView extends AbstractView {
 
   bind() {
     const element = this.element;
-    // const form = element.querySelector(`.game__content`);
-    // const options = element.querySelectorAll(`.game__option`);
     const backBtn = element.querySelector(`.header__back .back`);
 
     const gameOptions = element.querySelectorAll(`.game__option`);
     gameOptions.forEach((gameOption, index) => {
       gameOption.addEventListener(`click`, () => {
-
-        this.onAnswer(isCorrect(this._screen.questions[index].img, this._screen.correctAnswerType, this._screen.questions));
-
+        // передаем данные по ответу в обработчик ответа
+        this.onAnswer([{img: this._screen.questions[index].img, type: this._screen.correctAnswerType}]);
       });
     });
 
@@ -75,6 +70,9 @@ export default class GameView extends AbstractView {
     backBtn.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
+
+    // Устанавливаем таймер
+    this.setTime(this._state.time);
   }
 
   onBackButtonClick() {
@@ -83,6 +81,11 @@ export default class GameView extends AbstractView {
 
   onAnswer() {
 
+  }
+
+  setTime(time = this.state.timer) {
+    const timer = this.element.querySelector(`.game__timer`);
+    timer.innerHTML = time;
   }
 
 }
