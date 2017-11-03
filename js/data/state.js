@@ -8,7 +8,8 @@ const state = {
   userLives: Config.LIVES, // Текущее количество жизней игрока
   time: Config.TIMER,
   userName: ``,
-  userAnswers: []
+  userAnswers: [],
+  gameScreenNum: 0
 };
 
 /**
@@ -59,3 +60,15 @@ export const setLives = (prevState, userLives) => {
   newState.lives = userLives;
   return newState;
 };
+
+/**
+ * Устанавливает следующий номер игрового экрана
+ * @param {Object} prevState
+ * @return {Object}
+ */
+export const nextGameScreen = (prevState) => {
+  const newState = Object.assign({}, prevState);
+  newState.gameScreenNum++;
+  return newState;
+};
+

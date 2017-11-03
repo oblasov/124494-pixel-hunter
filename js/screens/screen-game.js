@@ -6,7 +6,7 @@ import GameView from '../view/game-view';
 import GameThreeView from '../view/game-three-view';
 
 import {screens, isCorrect, GameType} from '../data/game-data';
-import {addAnswer} from '../data/state';
+import {addAnswer, nextGameScreen} from '../data/state';
 
 /**
  * 4. Игровой экран
@@ -19,26 +19,26 @@ class ScreenGame {
     this.view = null;
     // номер игрового экрана
     this._gameScreenNum = 0;
+
+    this.timer = new Timer();
   }
 
   init(state) {
     // текущее состояние игры
     this.state = state;
-    this.timer = new Timer(this.state.time);
-    this.renderGameScreen();
-  }
+    this.timer.stop();
+    this.timer.value = this.state.time;
 
-  renderGameScreen() {
-    if (this._gameScreenNum === screens.length || this.state.userLives < 0) {
+    if (this.state.gameScreenNum === screens.length || this.state.userLives < 0) {
       // Экран с результатами, блок #stats, должен показываться по нажатию
       // на любой ответ на последнем игровом экране, любой блок .game__option
       App.showStats(this.state);
     } else {
 
-      const screenData = screens[this._gameScreenNum];
+      const screenData = screens[this.state.gameScreenNum];
 
       // выбираем отображение в зависимости от типа игры
-      this.view = (screens[this._gameScreenNum].type === GameType.THREE) ?
+      this.view = (screens[this.state.gameScreenNum].type === GameType.THREE) ?
         new GameThreeView(screenData, this.state.userAnswers, this.state) :
         new GameView(screenData, this.state.userAnswers, this.state);
 
@@ -55,7 +55,7 @@ class ScreenGame {
 
         // добавляем ответ
         this.state = addAnswer(correct, this.timer.value, this.state);
-        this.renderGameScreen(this.state);
+        this.nextGameScreen();
       };
 
       // отлавливаем событие клика по кнопке "Назад"
@@ -75,7 +75,6 @@ class ScreenGame {
         this.view.setTime(time);
       };
       // запускаем таймер
-      this.timer.value = this.state.time;
       this.timer.start();
       // если таймер истек, считаем, что пользователь ответил неверно
       this.timer.onExpire = () => {
@@ -83,9 +82,14 @@ class ScreenGame {
       };
     }
 
-    this._gameScreenNum++;
+  }
 
-
+  nextGameScreen() {
+    this.timer.stop();
+    // увеличиваем номер игрового экрана, перезаписывая состояние
+    this.state = nextGameScreen(this.state);
+    // сохраняем измененное состояние приложения
+    App.changeLocation(this.id, this.state);
   }
 
 }
