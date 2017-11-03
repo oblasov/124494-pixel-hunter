@@ -31,7 +31,13 @@ export const addAnswer = (correct, time, prevState) =>{
 
   let type = ``;
   if (correct) {
-    type = AnswerType.CORRECT;
+    if (time >= 20) {
+      type = AnswerType.FAST;
+    } else if (time < 10) {
+      type = AnswerType.SLOW;
+    } else {
+      type = AnswerType.CORRECT;
+    }
   } else {
     type = AnswerType.WRONG;
     newState = setLives(newState, newState.userLives--);

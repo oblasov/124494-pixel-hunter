@@ -198,6 +198,8 @@ export const countStats = (answers, userLives) => {
     correctAnswersBonus: 0,
     slowAnswersCount: 0,
     slowAnswersBonus: 0,
+    fastAnswersCount: 0,
+    fastAnswersBonus: 0,
     userLivesCount: userLives,
     userLivesBonus: 0
   };
@@ -218,6 +220,18 @@ export const countStats = (answers, userLives) => {
       // бонус по типу ответа
       sum += Bonus[answer.type.toUpperCase()];
       stats.correctAnswersCount++;
+
+      switch (answer.type) {
+        // если нужно выбрать из трех картинок
+        case AnswerType.SLOW:
+          stats.slowAnswersCount++;
+          stats.slowAnswersBonus += Bonus[answer.type.toUpperCase()];
+          break;
+        case AnswerType.FAST:
+          stats.fastAnswersCount++;
+          stats.fastAnswersBonus += Bonus[answer.type.toUpperCase()];
+          break;
+      }
     }
     return sum;
   }, 0);

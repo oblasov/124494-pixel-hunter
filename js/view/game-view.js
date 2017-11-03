@@ -58,7 +58,7 @@ export default class GameView extends AbstractView {
     const form = element.querySelector(`.game__content`);
     const options = element.querySelectorAll(`.game__option`);
     const backBtn = element.querySelector(`.header__back .back`);
-
+    // отлавливаем ответы
     form.addEventListener(`change`, () => {
 
       const answers = form.querySelectorAll(`input:checked`);
@@ -78,6 +78,9 @@ export default class GameView extends AbstractView {
     backBtn.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
+
+    // Устанавливаем таймер
+    this.setTime(this._state.time);
   }
 
   onBackButtonClick() {
@@ -86,6 +89,11 @@ export default class GameView extends AbstractView {
 
   onAnswer() {
 
+  }
+
+  setTime(time = this.state.timer) {
+    const timer = this.element.querySelector(`.game__timer`);
+    timer.innerHTML = time;
   }
 
 }
