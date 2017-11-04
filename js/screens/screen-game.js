@@ -5,7 +5,7 @@ import Timer from '../game/timer';
 import GameView from '../view/game-view';
 import GameThreeView from '../view/game-three-view';
 
-import {screens, isCorrect, GameType} from '../data/game-data';
+import {isCorrect, GameType} from '../data/game-data';
 import {addAnswer, nextGameScreen} from '../data/state';
 
 /**
@@ -14,16 +14,19 @@ import {addAnswer, nextGameScreen} from '../data/state';
  */
 class ScreenGame {
 
-  constructor() {
+  constructor(gameData) {
     // класс отрисовки экрана правил
     this.view = null;
     // номер игрового экрана
     this._gameScreenNum = 0;
 
     this.timer = new Timer();
+
+    this.screens = gameData;
   }
 
   init(state) {
+    const screens = this.screens;
     // текущее состояние игры
     this.state = state;
     this.timer.stop();
@@ -94,4 +97,4 @@ class ScreenGame {
 
 }
 
-export default new ScreenGame();
+export default ScreenGame;

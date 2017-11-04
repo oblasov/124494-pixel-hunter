@@ -1,7 +1,6 @@
 import App from './application';
-import {initState} from './data/state';
+import {adapt} from './data/game-data';
+import Loader from './loader';
 
-// инициализируем наше приложение
-App.init();
-// отрисовываем первый экран
-App.showIntro(initState());
+// получаем данные и инициализируем наше приложение
+Loader.loadData().then(adapt).then((gameData) => App.init(gameData));

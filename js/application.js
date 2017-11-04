@@ -1,10 +1,10 @@
 import screenIntro from './screens/screen-intro.js';
 import screenGreeting from './screens/screen-greeting.js';
 import screenRules from './screens/screen-rules.js';
-import screenGame from './screens/screen-game.js';
+import ScreenGame from './screens/screen-game.js';
 import screenStats from './screens/screen-stats.js';
 import {initState} from './data/state';
-
+import Loader from './loader';
 
 const ScreenId = {
   INTRO: ``,
@@ -26,12 +26,12 @@ const loadState = (dataString) => {
  * @constructor
  */
 export default class Application {
-  static init() {
+  static init(gameData) {
     this.route = {
       [ScreenId.INTRO]: screenIntro,
       [ScreenId.GREETING]: screenGreeting,
       [ScreenId.RULES]: screenRules,
-      [ScreenId.GAME]: screenGame,
+      [ScreenId.GAME]: new ScreenGame(gameData),
       [ScreenId.STATS]: screenStats
     };
 
@@ -70,8 +70,8 @@ export default class Application {
     location.hash = `${ScreenId.GREETING}?${saveState(initState())}`;
   }
 
-  static showRules() {
-    location.hash = ScreenId.RULES;
+  static showRules(state) {
+    location.hash = `${ScreenId.RULES}?${saveState(state)}`;
   }
 
   static showGame(state) {
@@ -79,7 +79,9 @@ export default class Application {
   }
 
   static showStats(state) {
-    location.hash = `${ScreenId.STATS}?${saveState(state)}`;
+    Loader.saveResults(state).then(() => {
+      location.hash = `${ScreenId.STATS}`;
+    });
   }
 
   static changeLocation(id, state) {

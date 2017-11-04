@@ -25,6 +25,11 @@ class Timer {
     if (this.value <= 0) {
       this._onExpire();
     }
+
+    if (this.value <= 5) {
+      this._startBlinking();
+    }
+
     // коллбек об изменении
     this._onChange();
     return this;
@@ -37,6 +42,7 @@ class Timer {
   }
 
   stop() {
+    this._stopBlinking();
     clearInterval(this._idInterval);
     // коллбек об изменении
     this._onChange();
@@ -47,6 +53,7 @@ class Timer {
    */
   _onExpire() {
     clearInterval(this._idInterval);
+    this._stopBlinking();
     // Вызываем коллбэк
     if (typeof this.onExpire === `function`) {
       this.onExpire();
@@ -54,13 +61,41 @@ class Timer {
   }
 
   /**
+   * @param {number} value
    * @private
    */
-  _onChange() {
+  _onChange(value = this.value) {
     // Вызываем коллбэк
     if (typeof this.onChange === `function`) {
-      this.onChange(this.value);
+      this.onChange(value);
     }
+  }
+
+  /**
+   * Таймер начинает мигать
+   * @private
+   * @return {boolean}
+   */
+  _startBlinking() {
+    if (this._idBlinkInterval) {
+      return false;
+    }
+    let visible = false;
+    this._idBlinkInterval = setInterval(() => {
+      this._onChange((visible) ? this.value : ``);
+      visible = !visible;
+    }, 300);
+    return true;
+  }
+
+  /**
+   * Остановить мигание таймера
+   * @private
+   */
+  _stopBlinking() {
+    clearInterval(this._idBlinkInterval);
+    // коллбек об изменении
+    this._onChange();
   }
 
 }

@@ -1,7 +1,7 @@
 import {renderScreen} from '../render-screen';
 
 import App from '../application';
-
+import {setUserName} from '../data/state';
 import RulesView from '../view/rules-view';
 
 /**
@@ -18,7 +18,8 @@ class ScreenRules {
     this.state = state;
     // Экран первой игры, блок #game-1, должен показываться по отправке формы на экране правил игры.
     // Кнопка отправки .rules__button.
-    this.view.onSubmit = () => {
+    this.view.onSubmit = (name) => {
+      this.state = setUserName(name, this.state);
       App.showGame(this.state);
     };
 

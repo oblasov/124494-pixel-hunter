@@ -52,7 +52,7 @@ export default class GreetingView extends AbstractView {
 
     form.addEventListener(`submit`, (e) => {
       e.preventDefault();
-      this.onSubmit();
+      this.onSubmit(input.value);
     });
 
 
