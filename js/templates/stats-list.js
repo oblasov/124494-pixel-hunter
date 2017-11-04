@@ -4,16 +4,20 @@
  * @return {string}
  */
 export default (userAnswers = []) => {
+
+  const list = userAnswers.map((answer) => {
+    return `<li class="stats__result stats__result--${answer.type}"></li>`;
+  });
+
   return `
-<ul class="stats">
-  ${userAnswers.reduce((str, answer) => {
-    str += `<li class="stats__result stats__result--${answer.type}"></li>`;
-    return str;
-  }, ``)}
-  
-  ${new Array(10 - userAnswers.length).fill(`<li class="stats__result stats__result--unknown"></li>`).join(``)}
-  
-</ul>`;
+      <ul class="stats">
+      
+        ${list.join(``)}
+        
+        ${new Array(10 - userAnswers.length).fill(`<li class="stats__result stats__result--unknown"></li>`).join(``)}
+        
+      </ul>
+  `;
 
 };
 

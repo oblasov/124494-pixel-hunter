@@ -4,8 +4,8 @@
  * @return {string}
  */
 export default (screen) => {
-  return screen.questions.reduce((str, question, index) => {
-    str += `        
+  const options = screen.questions.map((question, index) => {
+    return `        
         <div class="game__option">
           <img src="${question.img}" alt="Option ${index + 1}" width="${screen.imgWidth}" height="${screen.imgHeight}">
           
@@ -20,7 +20,8 @@ export default (screen) => {
           </label>` : ``}
           
         </div>`;
+  });
 
-    return str;
-  }, ``);
+  return options.join(``);
+
 };
