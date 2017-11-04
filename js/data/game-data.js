@@ -9,13 +9,6 @@ export const Config = {
 };
 
 /**
- * Текущее состояние пользователя
-
-export const user = {
-  lives: Config.LIVES
-};
- */
-/**
  * Бонусы за скорость
  * @enum {number}
  */
@@ -31,7 +24,7 @@ export const Bonus = {
  * @enum {string}
  */
 const QuestionType = {
-  PAINT: `paint`,
+  PAINT: `painting`,
   PHOTO: `photo`
 };
 
@@ -44,134 +37,17 @@ export const GameType = {
 };
 
 /**
- * Вопросы для игрока
- * @type {Array.<Object>}
+ * Проверка, правильный ли ответ
+ * @param {string} src
+ * @param {string} type
+ * @param {Array.<Object>} questions
+ * @return {boolean}
  */
-const questionsData = [
-  {
-    img: `https://k42.kn3.net/CF42609C8.jpg`,
-    type: QuestionType.PAINT
-  },
-  {
-    img: `https://k32.kn3.net/5C7060EC5.jpg`,
-    type: QuestionType.PAINT
-  },
-
-  {
-    img: `http://i.imgur.com/1KegWPz.jpg`,
-    type: QuestionType.PHOTO
-  },
-
-  {
-    img: `https://k42.kn3.net/D2F0370D6.jpg`,
-    type: QuestionType.PAINT
-  },
-  {
-    img: `https://i.imgur.com/DiHM5Zb.jpg`,
-    type: QuestionType.PHOTO
-  },
-  {
-    img: `http://i.imgur.com/DKR1HtB.jpg`,
-    type: QuestionType.PHOTO
-  }
-
-];
-
-
 export const isCorrect = (src, type, questions) => {
   return questions.some((question) => {
     return question.img === src && question.type === type;
   });
 };
-
-
-/**
- * Набор данных об экранах
- * @type {Array.<Object>}
- */
-export const screens = [
-  {
-    task: `Угадайте для каждого изображения фото или рисунок?`,
-    questions: questionsData.slice(0, 2),
-    btns: true,
-    imgWidth: 458,
-    imgHeight: 468
-  },
-  {
-    task: `Угадай, фото или рисунок?`,
-    type: `game__content--wide`,
-    questions: questionsData.slice(2, 3),
-    btns: true,
-    imgWidth: 705,
-    imgHeight: 455
-  },
-  {
-    task: `Найдите рисунок среди изображений`,
-    type: `game__content--triple`,
-    questions: questionsData.slice(3),
-    btns: false,
-    imgWidth: 304,
-    imgHeight: 455,
-    correctAnswerType: QuestionType.PAINT
-  },
-  {
-    task: `Найдите фото среди изображение`,
-    type: `game__content--triple`,
-    questions: questionsData.slice(3),
-    btns: false,
-    imgWidth: 304,
-    imgHeight: 455,
-    correctAnswerType: QuestionType.PHOTO
-  },
-  {
-    task: `Угадайте для каждого изображения фото или рисунок?`,
-    questions: questionsData.slice(0, 2),
-    btns: true,
-    imgWidth: 458,
-    imgHeight: 468
-  },
-  {
-    task: `Угадай, фото или рисунок?`,
-    type: `game__content--wide`,
-    questions: questionsData.slice(2, 3),
-    btns: true,
-    imgWidth: 705,
-    imgHeight: 455
-  },
-  {
-    task: `Найдите рисунок среди изображений`,
-    type: `game__content--triple`,
-    questions: questionsData.slice(3),
-    btns: false,
-    imgWidth: 304,
-    imgHeight: 455,
-    correctAnswerType: QuestionType.PAINT
-  },
-  {
-    task: `Угадайте для каждого изображения фото или рисунок?`,
-    questions: questionsData.slice(0, 2),
-    btns: true,
-    imgWidth: 458,
-    imgHeight: 468
-  },
-  {
-    task: `Угадай, фото или рисунок?`,
-    type: `game__content--wide`,
-    questions: questionsData.slice(2, 3),
-    btns: true,
-    imgWidth: 705,
-    imgHeight: 455
-  },
-  {
-    task: `Угадайте для каждого изображения фото или рисунок?`,
-    questions: questionsData.slice(0, 2),
-    btns: true,
-    imgWidth: 458,
-    imgHeight: 468
-  }
-
-];
-
 
 /**
  * Типы ответов
@@ -242,4 +118,30 @@ export const countStats = (answers, userLives) => {
   stats.total = stats.correctAnswersBonus + stats.userLivesBonus;
 
   return stats;
+};
+
+export const adapt = (data) => {
+
+  return data.map((dataObj) => {
+    const screen = {};
+    screen.task = dataObj.question;
+    switch (dataObj.type) {
+      case `one-of-three`:
+        screen.correctAnswerType = (screen.task === `Найдите рисунок среди изображений`) ? QuestionType.PAINT : QuestionType.PHOTO;
+        screen.type = `game__content--triple`;
+        break;
+      case `tinder-like`:
+        screen.type = `game__content--wide`;
+        screen.btns = true;
+        break;
+      default:
+        screen.btns = true;
+        break;
+    }
+
+    screen.questions = dataObj.answers.slice(0);
+
+    return screen;
+  });
+
 };

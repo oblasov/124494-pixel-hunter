@@ -1,4 +1,6 @@
 import App from './application';
+import {adapt} from './data/game-data';
+import Loader from './loader';
 
-// инициализируем наше приложение
-App.init();
+// получаем данные и инициализируем наше приложение
+Loader.loadData().then(adapt).then((gameData) => App.init(gameData));

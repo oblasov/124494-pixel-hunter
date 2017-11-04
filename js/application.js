@@ -1,7 +1,7 @@
 import screenIntro from './screens/screen-intro.js';
 import screenGreeting from './screens/screen-greeting.js';
 import screenRules from './screens/screen-rules.js';
-import screenGame from './screens/screen-game.js';
+import ScreenGame from './screens/screen-game.js';
 import screenStats from './screens/screen-stats.js';
 import {initState} from './data/state';
 import Loader from './loader';
@@ -26,12 +26,12 @@ const loadState = (dataString) => {
  * @constructor
  */
 export default class Application {
-  static init() {
+  static init(gameData) {
     this.route = {
       [ScreenId.INTRO]: screenIntro,
       [ScreenId.GREETING]: screenGreeting,
       [ScreenId.RULES]: screenRules,
-      [ScreenId.GAME]: screenGame,
+      [ScreenId.GAME]: new ScreenGame(gameData),
       [ScreenId.STATS]: screenStats
     };
 

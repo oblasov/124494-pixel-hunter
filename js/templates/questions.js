@@ -7,7 +7,7 @@ export default (screen) => {
   const options = screen.questions.map((question, index) => {
     return `        
         <div class="game__option">
-          <img src="${question.img}" alt="Option ${index + 1}" width="${screen.imgWidth}" height="${screen.imgHeight}">
+          <img src="${question.image.url}" alt="Option ${index + 1}" width="${question.image.width}" height="${question.image.height}">
           
           ${screen.btns ? `
           <label class="game__answer game__answer--photo">
