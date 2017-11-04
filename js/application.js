@@ -79,8 +79,8 @@ export default class Application {
   }
 
   static showStats(state) {
-    Loader.saveResults(state).then(() => {
-      location.hash = `${ScreenId.STATS}`;
+    Loader.saveResults(state, state.userName).then(() => {
+      location.hash = `${ScreenId.STATS}?${saveState(state)}`;
     });
   }
 

@@ -17,12 +17,14 @@ class ScreenStats {
     this.view = null;
   }
 
-  init() {
+  init(state) {
+    this.state = state;
+    // заглушка при загрузке данных
     const splash = new ScreenSplash();
     renderScreen(splash.getMarkup());
     splash.start();
     // загружаем результаты с сервера
-    Loader.loadResults().then((scores) => {
+    Loader.loadResults(this.state.userName).then((scores) => {
       this.state = scores[scores.length - 1];
       this.showScreen(scores);
     }).then(() => splash.stop());
