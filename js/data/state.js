@@ -80,6 +80,6 @@ export const nextGameScreen = (prevState) => {
  */
 export const setUserName = (userName, prevState) => {
   const newState = Object.assign({}, prevState);
-  newState.userName = userName;
+  newState.userName = userName.trim();
   return newState;
 };

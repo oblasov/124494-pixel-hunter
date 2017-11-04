@@ -23,7 +23,7 @@ export default class StatsView extends AbstractView {
 
   get template() {
     const title = this._victoryFlag ? `Победа!` : `Поражение...`;
-    const content = this._data.reverse().map((passage, index) => this.getTable(passage, index));
+    const content = this._data.reverse().map((passage, index) => StatsView.getTable(passage, index));
 
     // возвращаем шаблон
     return `
@@ -43,7 +43,22 @@ export default class StatsView extends AbstractView {
 
   }
 
-  getTable(data, index) {
+  bind() {
+    const stats = this.element;
+    const backBtn = stats.querySelector(`.header__back .back`);
+
+    // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
+    backBtn.addEventListener(`click`, () => {
+      this.onBackButtonClick();
+    });
+
+  }
+
+  onBackButtonClick() {
+
+  }
+
+  static getTable(data, index) {
 
     const userAnswers = data.userAnswers;
 
@@ -112,20 +127,4 @@ export default class StatsView extends AbstractView {
     </table>`;
 
   }
-
-  bind() {
-    const stats = this.element;
-    const backBtn = stats.querySelector(`.header__back .back`);
-
-    // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-    backBtn.addEventListener(`click`, () => {
-      this.onBackButtonClick();
-    });
-
-  }
-
-  onBackButtonClick() {
-
-  }
-
 }

@@ -47,7 +47,7 @@ export default class GreetingView extends AbstractView {
 
     input.addEventListener(`keyup`, () => {
       // Кнопка отправки должна быть отключена, disabled, пока в поле с именем игрока ничего не введено.
-      btn.disabled = !input.value;
+      btn.disabled = !input.value.trim();
     });
 
     form.addEventListener(`submit`, (e) => {

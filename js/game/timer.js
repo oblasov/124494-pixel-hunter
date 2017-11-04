@@ -1,3 +1,7 @@
+const TIMER_EXPIRED_VALUE = 0; // значение истчекшего таймера
+const TIMER_BLINKED_VALUE = 5; // значение истчекшего таймера
+const TIMER_BLINKED_INTERVAL = 500; // периодичность мигания таймера
+
 /**
  * @param {number} value
  * @constructor
@@ -18,16 +22,16 @@ class Timer {
   }
 
   tick() {
-    if (this.value > 0) {
+    if (this.value > TIMER_EXPIRED_VALUE) {
       this.value--;
+      // мигание таймера при его истечении
+      if (this.value <= TIMER_BLINKED_VALUE) {
+        this._startBlinking();
+      }
     }
-
-    if (this.value <= 0) {
+    // таймер истек
+    if (this.value <= TIMER_EXPIRED_VALUE) {
       this._onExpire();
-    }
-
-    if (this.value <= 5) {
-      this._startBlinking();
     }
 
     // коллбек об изменении
@@ -36,6 +40,7 @@ class Timer {
   }
 
   start() {
+    this._stopBlinking();
     this._idInterval = setInterval(() => {
       this.tick();
     }, 1000);
@@ -52,8 +57,8 @@ class Timer {
    * @private
    */
   _onExpire() {
-    clearInterval(this._idInterval);
     this._stopBlinking();
+    clearInterval(this._idInterval);
     // Вызываем коллбэк
     if (typeof this.onExpire === `function`) {
       this.onExpire();
@@ -77,14 +82,14 @@ class Timer {
    * @return {boolean}
    */
   _startBlinking() {
-    if (this._idBlinkInterval) {
+    if (typeof this._idBlinkInterval === `number`) {
       return false;
     }
     let visible = false;
     this._idBlinkInterval = setInterval(() => {
       this._onChange((visible) ? this.value : ``);
       visible = !visible;
-    }, 300);
+    }, TIMER_BLINKED_INTERVAL);
     return true;
   }
 
@@ -94,6 +99,7 @@ class Timer {
    */
   _stopBlinking() {
     clearInterval(this._idBlinkInterval);
+    this._idBlinkInterval = null;
     // коллбек об изменении
     this._onChange();
   }

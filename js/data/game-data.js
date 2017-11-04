@@ -25,7 +25,8 @@ export const Bonus = {
  */
 const QuestionType = {
   PAINT: `painting`,
-  PHOTO: `photo`
+  PHOTO: `photo`,
+  PAINTING: `painting`
 };
 
 /**
@@ -33,7 +34,18 @@ const QuestionType = {
  * @enum {string}
  */
 export const GameType = {
-  THREE: `game__content--triple`
+  THREE: `game__content--triple`,
+  WIDE: `game__content--wide`,
+  ONE_OF_THREE: `one-of-three`,
+  TINDER_LIKE: `tinder-like`
+};
+
+/**
+ * Заголовки экранов полученные с сервера
+ * @enum {string}
+ */
+const GameTitle = {
+  SEARCH_PAINT: `Найдите рисунок среди изображений`
 };
 
 /**
@@ -45,7 +57,7 @@ export const GameType = {
  */
 export const isCorrect = (src, type, questions) => {
   return questions.some((question) => {
-    return question.img === src && question.type === type;
+    return question.image.url === src && question.type === QuestionType[type.toUpperCase()];
   });
 };
 
@@ -100,11 +112,11 @@ export const countStats = (answers, userLives) => {
         // если нужно выбрать из трех картинок
         case AnswerType.SLOW:
           stats.slowAnswersCount++;
-          stats.slowAnswersBonus += Bonus[answer.type.toUpperCase()] - Bonus.CORRECT;
+          stats.slowAnswersBonus += Bonus.SLOW - Bonus.CORRECT;
           break;
         case AnswerType.FAST:
           stats.fastAnswersCount++;
-          stats.fastAnswersBonus += Bonus[answer.type.toUpperCase()] - Bonus.CORRECT;
+          stats.fastAnswersBonus += Bonus.FAST - Bonus.CORRECT;
           break;
       }
     }
@@ -124,12 +136,12 @@ export const adapt = (data) => {
     const screen = {};
     screen.task = dataObj.question;
     switch (dataObj.type) {
-      case `one-of-three`:
-        screen.correctAnswerType = (screen.task === `Найдите рисунок среди изображений`) ? QuestionType.PAINT : QuestionType.PHOTO;
-        screen.type = `game__content--triple`;
+      case GameType.ONE_OF_THREE:
+        screen.correctAnswerType = (screen.task === GameTitle.SEARCH_PAINT) ? QuestionType.PAINT : QuestionType.PHOTO;
+        screen.type = GameType.THREE;
         break;
-      case `tinder-like`:
-        screen.type = `game__content--wide`;
+      case GameType.TINDER_LIKE:
+        screen.type = GameType.WIDE;
         screen.btns = true;
         break;
       default:

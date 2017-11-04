@@ -53,6 +53,11 @@ export default class GameView extends AbstractView {
 
   }
 
+  setTime(time = this.state.timer) {
+    this.timer = this.element.querySelector(`.game__timer`);
+    this.timer.innerHTML = time;
+  }
+
   bind() {
     const element = this.element;
     const form = element.querySelector(`.game__content`);
@@ -66,7 +71,7 @@ export default class GameView extends AbstractView {
       if (options.length === answers.length) {
         // формируем массив ответов
         const answersData = Array.from(answers).map((answer, index) => {
-          return {img: this._screen.questions[index].img, type: answer.value};
+          return {img: this._screen.questions[index].image.url, type: answer.value};
         });
         // передаем его в обработчик
         this.onAnswer(answersData);
@@ -89,11 +94,6 @@ export default class GameView extends AbstractView {
 
   onAnswer() {
 
-  }
-
-  setTime(time = this.state.timer) {
-    const timer = this.element.querySelector(`.game__timer`);
-    timer.innerHTML = time;
   }
 
 }
