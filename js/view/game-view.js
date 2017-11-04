@@ -53,6 +53,11 @@ export default class GameView extends AbstractView {
 
   }
 
+  setTime(time = this.state.timer) {
+    this.timer = this.element.querySelector(`.game__timer`);
+    this.timer.innerHTML = time;
+  }
+
   bind() {
     const element = this.element;
     const form = element.querySelector(`.game__content`);
@@ -89,11 +94,6 @@ export default class GameView extends AbstractView {
 
   onAnswer() {
 
-  }
-
-  setTime(time = this.state.timer) {
-    const timer = this.element.querySelector(`.game__timer`);
-    timer.innerHTML = time;
   }
 
 }
