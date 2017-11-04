@@ -4,7 +4,7 @@ import screenRules from './screens/screen-rules.js';
 import screenGame from './screens/screen-game.js';
 import screenStats from './screens/screen-stats.js';
 import {initState} from './data/state';
-
+import Loader from './loader';
 
 const ScreenId = {
   INTRO: ``,
@@ -79,7 +79,9 @@ export default class Application {
   }
 
   static showStats(state) {
-    location.hash = `${ScreenId.STATS}?${saveState(state)}`;
+    Loader.saveResults(state).then(() => {
+      location.hash = `${ScreenId.STATS}`;
+    });
   }
 
   static changeLocation(id, state) {

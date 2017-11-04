@@ -2,10 +2,9 @@ import {renderScreen} from '../render-screen.js';
 
 import App from '../application';
 
-import {countStats} from '../data/game-data.js';
+import StatsVictoryView from '../view/stats-view.js';
 
-import StatsVictoryView from '../view/stats-victory-view.js';
-import StatsFailView from '../view/stats-fail-view.js';
+import Loader from '../loader';
 
 /**
  * 7. Экран с результатами, блок #stats.
@@ -18,15 +17,17 @@ class ScreenStats {
     this.view = null;
   }
 
-  init(state) {
-    // текущее состояние приложения
-    this.state = state;
-    //
-    if (this.state.userLives >= 0) {
-      this.view = new StatsVictoryView(countStats(this.state.userAnswers, this.state.userLives), this.state.userAnswers);
-    } else {
-      this.view = new StatsFailView(this.state.userAnswers);
-    }
+  init() {
+    // загружаем результаты с сервера
+    Loader.loadResults().then((scores) => {
+      this.state = scores[scores.length - 1];
+      this.showScreen(scores);
+    });
+  }
+
+  showScreen(scores) {
+
+    this.view = new StatsVictoryView(scores, this.state.userLives >= 0);
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
     this.view.onBackButtonClick = () => {
@@ -35,7 +36,6 @@ class ScreenStats {
     };
     // отрисовываем этот экран
     renderScreen(this.view.getMarkup());
-
   }
 
 }

@@ -72,3 +72,14 @@ export const nextGameScreen = (prevState) => {
   return newState;
 };
 
+/**
+ * Устанавливает имя пользователя
+ * @param {string} userName
+ * @param {Object} prevState
+ * @return {Object}
+ */
+export const setUserName = (userName, prevState) => {
+  const newState = Object.assign({}, prevState);
+  newState.userName = userName;
+  return newState;
+};
