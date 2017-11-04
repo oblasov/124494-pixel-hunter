@@ -57,7 +57,7 @@ export default class StatsView extends AbstractView {
 
     data = countStats(data.userAnswers, data.userLives);
 
-    if (!Array.isArray(data)) {
+    if (typeof data === `object`) {
 
       bonusForFast = `
         <tr>

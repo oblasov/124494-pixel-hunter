@@ -70,8 +70,8 @@ export default class Application {
     location.hash = `${ScreenId.GREETING}?${saveState(initState())}`;
   }
 
-  static showRules() {
-    location.hash = ScreenId.RULES;
+  static showRules(state) {
+    location.hash = `${ScreenId.RULES}?${saveState(state)}`;
   }
 
   static showGame(state) {

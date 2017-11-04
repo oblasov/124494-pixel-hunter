@@ -81,7 +81,6 @@ export const countStats = (answers, userLives) => {
   };
 
   if (!Array.isArray(answers) || typeof userLives !== `number` || isNaN(userLives)) {
-    // throw new Error(`invalid input data`);
     return null;
   }
 
@@ -90,32 +89,31 @@ export const countStats = (answers, userLives) => {
   }
 
   // Производим подсчет заработанных очков
-  stats.correctAnswersBonus = answers.reduce((sum, answer) => {
+  answers.forEach((answer) => {
     // За каждый правильный ответ
     if (answer.correct) {
-      // бонус по типу ответа
-      sum += Bonus[answer.type.toUpperCase()];
+      // начисляем за правильный ответ
       stats.correctAnswersCount++;
-
+      stats.correctAnswersBonus += Bonus.CORRECT;
+      // бонус по типу ответа
       switch (answer.type) {
         // если нужно выбрать из трех картинок
         case AnswerType.SLOW:
           stats.slowAnswersCount++;
-          stats.slowAnswersBonus += Bonus[answer.type.toUpperCase()];
+          stats.slowAnswersBonus += Bonus[answer.type.toUpperCase()] - Bonus.CORRECT;
           break;
         case AnswerType.FAST:
           stats.fastAnswersCount++;
-          stats.fastAnswersBonus += Bonus[answer.type.toUpperCase()];
+          stats.fastAnswersBonus += Bonus[answer.type.toUpperCase()] - Bonus.CORRECT;
           break;
       }
     }
-    return sum;
-  }, 0);
+  });
 
   // За каждое неиспользованное право на ошибку добавляется 50 очков.
   stats.userLivesBonus += Bonus.LIFE * stats.userLivesCount;
 
-  stats.total = stats.correctAnswersBonus + stats.userLivesBonus;
+  stats.total = stats.correctAnswersBonus + stats.userLivesBonus + stats.fastAnswersBonus + stats.slowAnswersBonus;
 
   return stats;
 };

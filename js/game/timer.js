@@ -42,6 +42,7 @@ class Timer {
   }
 
   stop() {
+    this._stopBlinking();
     clearInterval(this._idInterval);
     // коллбек об изменении
     this._onChange();
