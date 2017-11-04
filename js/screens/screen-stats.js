@@ -5,7 +5,7 @@ import App from '../application';
 import StatsVictoryView from '../view/stats-view.js';
 
 import Loader from '../loader';
-
+import ScreenSplash from '../screens/screen-splash';
 /**
  * 7. Экран с результатами, блок #stats.
  * @constructor
@@ -18,11 +18,14 @@ class ScreenStats {
   }
 
   init() {
+    const splash = new ScreenSplash();
+    renderScreen(splash.getMarkup());
+    splash.start();
     // загружаем результаты с сервера
     Loader.loadResults().then((scores) => {
       this.state = scores[scores.length - 1];
       this.showScreen(scores);
-    });
+    }).then(() => splash.stop());
   }
 
   showScreen(scores) {

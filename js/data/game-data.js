@@ -25,7 +25,8 @@ export const Bonus = {
  */
 const QuestionType = {
   PAINT: `painting`,
-  PHOTO: `photo`
+  PHOTO: `photo`,
+  PAINTING: `painting`
 };
 
 /**
@@ -33,7 +34,10 @@ const QuestionType = {
  * @enum {string}
  */
 export const GameType = {
-  THREE: `game__content--triple`
+  THREE: `game__content--triple`,
+  WIDE: `game__content--wide`,
+  ONE_OF_THREE: `one-of-three`,
+  TINDER_LIKE: `tinder-like`
 };
 
 /**
@@ -45,7 +49,7 @@ export const GameType = {
  */
 export const isCorrect = (src, type, questions) => {
   return questions.some((question) => {
-    return question.img === src && question.type === type;
+    return question.image.url === src && question.type === QuestionType[type.toUpperCase()];
   });
 };
 
@@ -124,12 +128,12 @@ export const adapt = (data) => {
     const screen = {};
     screen.task = dataObj.question;
     switch (dataObj.type) {
-      case `one-of-three`:
+      case GameType.ONE_OF_THREE:
         screen.correctAnswerType = (screen.task === `Найдите рисунок среди изображений`) ? QuestionType.PAINT : QuestionType.PHOTO;
-        screen.type = `game__content--triple`;
+        screen.type = GameType.THREE;
         break;
-      case `tinder-like`:
-        screen.type = `game__content--wide`;
+      case GameType.TINDER_LIKE:
+        screen.type = GameType.WIDE;
         screen.btns = true;
         break;
       default:

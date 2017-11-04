@@ -61,7 +61,7 @@ export default class GameView extends AbstractView {
     gameOptions.forEach((gameOption, index) => {
       gameOption.addEventListener(`click`, () => {
         // передаем данные по ответу в обработчик ответа
-        this.onAnswer([{img: this._screen.questions[index].img, type: this._screen.correctAnswerType}]);
+        this.onAnswer([{img: this._screen.questions[index].image.url, type: this._screen.correctAnswerType}]);
       });
     });
 

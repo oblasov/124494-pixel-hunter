@@ -66,7 +66,7 @@ export default class GameView extends AbstractView {
       if (options.length === answers.length) {
         // формируем массив ответов
         const answersData = Array.from(answers).map((answer, index) => {
-          return {img: this._screen.questions[index].img, type: answer.value};
+          return {img: this._screen.questions[index].image.url, type: answer.value};
         });
         // передаем его в обработчик
         this.onAnswer(answersData);
