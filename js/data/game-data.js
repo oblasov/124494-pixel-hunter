@@ -5,7 +5,9 @@
 export const Config = {
   LIVES: 3,
   TIMER: 30,
-  TIME: 0
+  TIME: 0,
+  NUMBER_OF_QUESTIONS: 10,
+  MIN_LIVES: 0
 };
 
 /**
@@ -96,7 +98,7 @@ export const countStats = (answers, userLives) => {
     return null;
   }
 
-  if (answers.length < 10 || userLives < 0) {
+  if (answers.length < Config.NUMBER_OF_QUESTIONS || userLives < Config.MIN_LIVES) {
     return -1;
   }
 
@@ -142,10 +144,10 @@ export const adapt = (data) => {
         break;
       case GameType.TINDER_LIKE:
         screen.type = GameType.WIDE;
-        screen.btns = true;
+        screen.buttons = true;
         break;
       default:
-        screen.btns = true;
+        screen.buttons = true;
         break;
     }
 

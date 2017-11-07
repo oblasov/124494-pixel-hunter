@@ -53,25 +53,29 @@ export default class GameView extends AbstractView {
 
   }
 
+  setTime(time = this.state.timer) {
+    this.timer.innerHTML = time;
+  }
+
   bind() {
     const element = this.element;
-    const backBtn = element.querySelector(`.header__back .back`);
-
+    const backButton = element.querySelector(`.header__back .back`);
     const gameOptions = element.querySelectorAll(`.game__option`);
+
     gameOptions.forEach((gameOption, index) => {
-      gameOption.addEventListener(`click`, () => {
+      gameOption.addEventListener(`mousedown`, () => {
         // передаем данные по ответу в обработчик ответа
         this.onAnswer([{img: this._screen.questions[index].image.url, type: this._screen.correctAnswerType}]);
       });
     });
 
-
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-    backBtn.addEventListener(`click`, () => {
+    backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
 
     // Устанавливаем таймер
+    this.timer = this.element.querySelector(`.game__timer`);
     this.setTime(this._state.time);
   }
 
@@ -83,9 +87,5 @@ export default class GameView extends AbstractView {
 
   }
 
-  setTime(time = this.state.timer) {
-    const timer = this.element.querySelector(`.game__timer`);
-    timer.innerHTML = time;
-  }
 
 }

@@ -1,7 +1,7 @@
 import {renderScreen} from '../render-screen.js';
 
 import App from '../application';
-
+import {Config} from '../data/game-data';
 import StatsVictoryView from '../view/stats-view.js';
 
 import Loader from '../loader';
@@ -32,7 +32,7 @@ class ScreenStats {
 
   showScreen(scores) {
 
-    this.view = new StatsVictoryView(scores, this.state.userLives >= 0);
+    this.view = new StatsVictoryView(scores, this.state.userLives >= Config.MIN_LIVES);
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
     this.view.onBackButtonClick = () => {

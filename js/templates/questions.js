@@ -9,7 +9,7 @@ export default (screen) => {
         <div class="game__option">
           <img src="${question.image.url}" alt="Option ${index + 1}" width="${question.image.width}" height="${question.image.height}">
           
-          ${screen.btns ? `
+          ${screen.buttons ? `
           <label class="game__answer game__answer--photo">
             <input name="question${index + 1}" type="radio" value="photo">
             <span>Фото</span>

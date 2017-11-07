@@ -54,7 +54,6 @@ export default class GameView extends AbstractView {
   }
 
   setTime(time = this.state.timer) {
-    this.timer = this.element.querySelector(`.game__timer`);
     this.timer.innerHTML = time;
   }
 
@@ -62,7 +61,7 @@ export default class GameView extends AbstractView {
     const element = this.element;
     const form = element.querySelector(`.game__content`);
     const options = element.querySelectorAll(`.game__option`);
-    const backBtn = element.querySelector(`.header__back .back`);
+    const backButton = element.querySelector(`.header__back .back`);
     // отлавливаем ответы
     form.addEventListener(`change`, () => {
 
@@ -80,11 +79,12 @@ export default class GameView extends AbstractView {
     });
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-    backBtn.addEventListener(`click`, () => {
+    backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
 
     // Устанавливаем таймер
+    this.timer = this.element.querySelector(`.game__timer`);
     this.setTime(this._state.time);
   }
 

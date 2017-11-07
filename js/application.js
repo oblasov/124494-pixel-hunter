@@ -18,8 +18,17 @@ const saveState = (state) => {
   return JSON.stringify(state);
 };
 
+const Literal = {
+  QUOTE: `%22`
+};
+
 const loadState = (dataString) => {
-  return JSON.parse(dataString);
+  dataString = dataString.split(Literal.QUOTE).join(`"`); // Для Firefox
+  try {
+    return JSON.parse(dataString);
+  } catch (e) {
+    return initState();
+  }
 };
 
 /**

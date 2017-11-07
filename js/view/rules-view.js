@@ -42,12 +42,12 @@ export default class GreetingView extends AbstractView {
     // Кнопка отправки .rules__button.
     const form = rules.querySelector(`.rules__form`);
     const input = rules.querySelector(`.rules__input`);
-    const btn = rules.querySelector(`.rules__button`);
-    const backBtn = rules.querySelector(`.header__back .back`);
+    const submitButton = rules.querySelector(`.rules__button`);
+    const backButton = rules.querySelector(`.header__back .back`);
 
     input.addEventListener(`keyup`, () => {
       // Кнопка отправки должна быть отключена, disabled, пока в поле с именем игрока ничего не введено.
-      btn.disabled = !input.value.trim();
+      submitButton.disabled = !input.value.trim();
     });
 
     form.addEventListener(`submit`, (e) => {
@@ -57,7 +57,7 @@ export default class GreetingView extends AbstractView {
 
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-    backBtn.addEventListener(`click`, () => {
+    backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
 

@@ -5,6 +5,7 @@ export default class SplashScreen extends AbstractView {
   constructor() {
     super();
     this.cursor = 0;
+    this.interval = 50;
     this.symbolsSeq = `/—\\|`;
   }
 
@@ -19,7 +20,7 @@ export default class SplashScreen extends AbstractView {
   start() {
     this.cursor = ++this.cursor >= this.symbolsSeq.length ? 0 : this.cursor;
     this.element.textContent = this.symbolsSeq[this.cursor];
-    this.timeout = setTimeout(() => this.start(), 50);
+    this.timeout = setTimeout(() => this.start(), this.interval);
   }
 
   stop() {

@@ -45,10 +45,10 @@ export default class StatsView extends AbstractView {
 
   bind() {
     const stats = this.element;
-    const backBtn = stats.querySelector(`.header__back .back`);
+    const backButton = stats.querySelector(`.header__back .back`);
 
     // Нажатие на кнопку «Назад» в левом верхнем углу должно с любого экрана возвращать на экран приветствия.
-    backBtn.addEventListener(`click`, () => {
+    backButton.addEventListener(`click`, () => {
       this.onBackButtonClick();
     });
 

@@ -1,6 +1,7 @@
 const TIMER_EXPIRED_VALUE = 0; // значение истчекшего таймера
 const TIMER_BLINKED_VALUE = 5; // значение истчекшего таймера
 const TIMER_BLINKED_INTERVAL = 500; // периодичность мигания таймера
+const TIMER_TICKED_INTERVAL = 1000; // периодичность таймера
 
 /**
  * @param {number} value
@@ -43,7 +44,7 @@ class Timer {
     this._stopBlinking();
     this._idInterval = setInterval(() => {
       this.tick();
-    }, 1000);
+    }, TIMER_TICKED_INTERVAL);
   }
 
   stop() {
